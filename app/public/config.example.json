@@ -1,0 +1,987 @@
+{
+  "haUrl": "http://homeassistant.local:8123",
+  "pages": [
+    {
+      "name": "News",
+      "columns": [
+        {
+          "size": "small",
+          "widgets": [
+            {
+              "type": "search",
+              "bangs": [
+                {
+                  "shortcut": "!yt",
+                  "url": "https://www.youtube.com/results?search_query={QUERY}"
+                },
+                {
+                  "shortcut": "!fb",
+                  "url": "https://www.facebook.com/search/top?q={QUERY}"
+                },
+                {
+                  "shortcut": "!g",
+                  "url": "https://www.google.com/search?q={QUERY}"
+                },
+                {
+                  "shortcut": "!gh",
+                  "url": "https://github.com/search?q={QUERY}"
+                },
+                {
+                  "shortcut": "!r",
+                  "url": "https://www.reddit.com/search/?q={QUERY}"
+                }
+              ]
+            },
+            {
+              "type": "bookmarks",
+              "groups": [
+                {
+                  "title": "Social Media",
+                  "links": [
+                    {
+                      "title": "Facebook",
+                      "url": "https://facebook.com/"
+                    },
+                    {
+                      "title": "YouTube",
+                      "url": "https://youtube.com/"
+                    },
+                    {
+                      "title": "Reddit",
+                      "url": "https://reddit.com/"
+                    },
+                    {
+                      "title": "X (Twitter)",
+                      "url": "https://twitter.com/"
+                    },
+                    {
+                      "title": "Pinterest",
+                      "url": "https://pinterest.com/"
+                    }
+                  ]
+                },
+                {
+                  "title": "Google Services",
+                  "links": [
+                    {
+                      "title": "Gmail",
+                      "url": "https://mail.google.com/"
+                    },
+                    {
+                      "title": "Google Drive",
+                      "url": "https://drive.google.com/drive"
+                    },
+                    {
+                      "title": "Google Calendar",
+                      "url": "https://calendar.google.com/"
+                    },
+                    {
+                      "title": "Google Keep",
+                      "url": "https://keep.google.com/"
+                    },
+                    {
+                      "title": "Google Contacts",
+                      "url": "https://contacts.google.com/"
+                    },
+                    {
+                      "title": "Google Sheets",
+                      "url": "https://sheets.google.com/"
+                    },
+                    {
+                      "title": "Google Chat",
+                      "url": "https://chat.google.com/"
+                    }
+                  ]
+                },
+                {
+                  "title": "Entertainment",
+                  "links": [
+                    {
+                      "title": "Netflix",
+                      "url": "https://netflix.com/"
+                    },
+                    {
+                      "title": "nCore",
+                      "url": "https://ncore.pro/"
+                    },
+                    {
+                      "title": "Twitch",
+                      "url": "https://twitch.tv/"
+                    },
+                    {
+                      "title": "9GAG",
+                      "url": "https://9gag.com/"
+                    }
+                  ]
+                },
+                {
+                  "title": "Shopping",
+                  "links": [
+                    {
+                      "title": "AliExpress",
+                      "url": "https://aliexpress.com/"
+                    },
+                    {
+                      "title": "Temu",
+                      "url": "https://temu.com/"
+                    }
+                  ]
+                },
+                {
+                  "title": "AI Services",
+                  "links": [
+                    {
+                      "title": "DeepSeek",
+                      "url": "https://chat.deepseek.com/"
+                    },
+                    {
+                      "title": "ChatGPT",
+                      "url": "https://chatgpt.com/"
+                    },
+                    {
+                      "title": "Perplexity",
+                      "url": "https://www.perplexity.ai/"
+                    },
+                    {
+                      "title": "Claude",
+                      "url": "https://claude.ai/new",
+                      "icon": "claude-ai"
+                    },
+                    {
+                      "title": "Grok",
+                      "url": "https://grok.com/"
+                    }
+                  ]
+                },
+                {
+                  "title": "Synology",
+                  "links": [
+                    {
+                      "title": "Calendar",
+                      "url": "http://192.168.0.2:5000/?launchApp=SYNO.Cal.Application",
+                      "icon": "synology"
+                    },
+                    {
+                      "title": "Photos",
+                      "url": "http://192.168.0.2:5000/?launchApp=SYNO.Foto.AppInstance",
+                      "icon": "synology"
+                    },
+                    {
+                      "title": "Contacts",
+                      "url": "http://192.168.0.2:5000/?launchApp=SYNO.Contacts.AppInstance",
+                      "icon": "synology"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "linkwarden",
+              "title": "Linkwarden",
+              "entity": "sensor.linkwarden_kategoriak",
+              "recent": 10
+            }
+          ]
+        },
+        {
+          "size": "full",
+          "widgets": [
+            {
+              "type": "rss",
+              "title": "Reddit",
+              "mode": "tabs",
+              "limit": 15,
+              "feeds": [
+                {
+                  "name": "hungary",
+                  "url": "/reddit/r/hungary",
+                  "kind": "json"
+                },
+                {
+                  "name": "programmingHungary",
+                  "url": "/reddit/r/programmingHungary",
+                  "kind": "json"
+                },
+                {
+                  "name": "LocalLLaMA",
+                  "url": "/reddit/r/LocalLLaMA",
+                  "kind": "json"
+                },
+                {
+                  "name": "selfhosted",
+                  "url": "/reddit/r/selfhosted",
+                  "kind": "json"
+                },
+                {
+                  "name": "neovim",
+                  "url": "/reddit/r/neovim",
+                  "kind": "json"
+                },
+                {
+                  "name": "ObsidianMD",
+                  "url": "/reddit/r/ObsidianMD",
+                  "kind": "json"
+                },
+                {
+                  "name": "ClaudeCode",
+                  "url": "/reddit/r/ClaudeCode",
+                  "kind": "json"
+                },
+                {
+                  "name": "Debrecen",
+                  "url": "/reddit/r/Debrecen",
+                  "kind": "json"
+                },
+                {
+                  "name": "LLMDevs",
+                  "url": "/reddit/r/LLMDevs",
+                  "kind": "json"
+                }
+              ]
+            },
+            {
+              "type": "rss",
+              "title": "Videos",
+              "mode": "tabs",
+              "limit": 15,
+              "feeds": [
+                {
+                  "name": "Linus Tech Tips",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCXuqSBlHAE6Xw-yeJA0Tunw",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "the Zone",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCFLj8uVcUemF9nF3rQzc-CA",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "fókuszcsoport",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCIITmFAHQ4S1FMDWqhZyQKg",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "Karotta",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCrFqWhglNIdjciMNNB9IW5w",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "VILÁGJEGY",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCDwyp7fW0R8b27muWFEAgvQ",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "RetroShock!",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCS7UA-DV1X3H0XyWol17N4g",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "Videómánia",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCVoGCDIv8h3OkzZYySWK6lw",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "Magyar Péter Hivatalos",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCDHjSN4vbfmzb8Cdfsob9Gg",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "CARCLASSICS",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCYg3y-mgGOD2HbCP5KH6NQA",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "Amon Oliver",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCuFWG5idQ00n4mrYNFZYhOQ",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "Radics Peti",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCWALLPCVkSyKLuZLg5bc3QQ",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "Somogyi András",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCh3R6X7h9M4Yhlannc0Intg",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "JustVidman",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCoXnnnrdhaKljuhA2IrIhVQ",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "Pottyondy Edina",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UC_fAjvoGnqySaNM6DRfFiCA",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "PAXEL",
+                  "url": "/feed/www.youtube.com/feeds/videos.xml?channel_id=UCk7FQgMgoeY9iKo3HkNQCDA",
+                  "tab": "YouTube",
+                  "icon": "yt"
+                },
+                {
+                  "name": "Sorozatok",
+                  "kind": "jellyfin",
+                  "icon": "tv",
+                  "web": "http://jellyfin.lan",
+                  "url": "/jellyfin/Items?userId=<jellyfin-user-id>&IncludeItemTypes=Series&SortBy=DateLastContentAdded&Recursive=true&SortOrder=Descending&Limit=15&Fields=DateCreated,DateLastContentAdded,ProductionYear"
+                },
+                {
+                  "name": "Filmek",
+                  "kind": "jellyfin",
+                  "icon": "film",
+                  "web": "http://jellyfin.lan",
+                  "url": "/jellyfin/Items?userId=<jellyfin-user-id>&IncludeItemTypes=Movie&SortBy=DateCreated&Recursive=true&SortOrder=Descending&Limit=15&Fields=DateCreated,DateLastContentAdded,ProductionYear"
+                }
+              ]
+            },
+            {
+              "type": "rss",
+              "title": "News",
+              "mode": "tabs",
+              "limit": 20,
+              "feeds": [
+                {
+                  "name": "24.hu",
+                  "url": "/feed/24.hu/feed/",
+                  "icon": "news",
+                  "tab": "Hírek"
+                },
+                {
+                  "name": "telex.hu",
+                  "url": "/feed/telex.hu/rss",
+                  "tab": "Hírek"
+                },
+                {
+                  "name": "444.hu",
+                  "url": "/feed/444.hu/feed",
+                  "tab": "Hírek"
+                },
+                {
+                  "name": "hvg.hu",
+                  "url": "/feed/hvg.hu/rss",
+                  "tab": "Hírek"
+                },
+                {
+                  "name": "selfh.st",
+                  "url": "/feed/selfh.st/rss/",
+                  "tab": "Hírek"
+                },
+                {
+                  "name": "HN",
+                  "url": "/feed/news.ycombinator.com/rss",
+                  "icon": "hn"
+                },
+                {
+                  "name": "Lobsters",
+                  "url": "/feed/lobste.rs/rss",
+                  "icon": "lobster"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "size": "small",
+          "widgets": [
+            {
+              "type": "clock-weather",
+              "entity": "weather.openweathermap"
+            },
+            {
+              "type": "calendar",
+              "title": "Naptár",
+              "entities": [
+                {
+                  "id": "calendar.synology_naptar",
+                  "label": "Synology",
+                  "color": "#5b9cf5"
+                },
+                {
+                  "id": "calendar.sonarr",
+                  "label": "Sonarr",
+                  "color": "#4cc38a"
+                },
+                {
+                  "id": "calendar.radarr",
+                  "label": "Radarr",
+                  "color": "#b180f0"
+                },
+                {
+                  "kind": "todo",
+                  "label": "Feladat",
+                  "color": "#f0c040",
+                  "ids": [
+                    "todo.inbox",
+                    "todo.inbox_2",
+                    "todo.elektronikai",
+                    "todo.eskuvo",
+                    "todo.hazvasarlas",
+                    "todo.karbantartas",
+                    "todo.learning",
+                    "todo.nyaralas",
+                    "todo.prius",
+                    "todo.selfhosted"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "waqi",
+              "title": "Air Quality",
+              "lat": 47.347005304269494,
+              "lon": 21.566565115732438
+            },
+            {
+              "type": "rss",
+              "title": "CVE – High/Critical",
+              "mode": "merged",
+              "limit": 10,
+              "feeds": [
+                {
+                  "name": "cvefeed.io",
+                  "url": "/feed/cvefeed.io/rssfeed/severity/high.xml"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "columns": [
+        {
+          "size": "small",
+          "widgets": [
+            {
+              "type": "bookmarks",
+              "groups": [
+                {
+                  "title": "3D Printing",
+                  "links": [
+                    {
+                      "title": "OctoPrint ET4",
+                      "url": "http://octopi.local/et4/",
+                      "icon": "octoprint"
+                    },
+                    {
+                      "title": "OctoPrint AM8",
+                      "url": "http://octopi.local/am8/",
+                      "icon": "octoprint"
+                    }
+                  ]
+                },
+                {
+                  "title": "Proxmox",
+                  "links": [
+                    {
+                      "title": "Proxmox1",
+                      "url": "https://192.168.0.3:8006/",
+                      "icon": "proxmox"
+                    },
+                    {
+                      "title": "Proxmox2",
+                      "url": "https://192.168.0.4:8006/",
+                      "icon": "proxmox"
+                    },
+                    {
+                      "title": "Proxmox3",
+                      "url": "https://192.168.0.5:8006/",
+                      "icon": "proxmox"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "pihole",
+              "title": "DNS",
+              "switch": "switch.pi_hole",
+              "status": "binary_sensor.pi_hole_allapot",
+              "domains": "sensor.pi_hole_blokkolt_domainek",
+              "ads": "sensor.pi_hole_blokkolt_hirdetesek",
+              "percent": "sensor.pi_hole_blokkolt_hirdetesek_szazaleka"
+            },
+            {
+              "type": "torrent",
+              "title": "qBittorrent",
+              "status": "sensor.qbittorrent_allapot",
+              "active": "sensor.qbittorrent_aktiv_torrentek",
+              "down": "sensor.qbittorrent_letoltesi_sebesseg",
+              "up": "sensor.qbittorrent_feltoltesi_sebesseg",
+              "alt": "switch.qbittorrent_alternativ_sebesseg"
+            },
+            {
+              "type": "ha-entities",
+              "title": "Függő frissítések (on = van)",
+              "entities": [
+                "update.homenas_dsm_update",
+                "update.node_homeserver_software_update",
+                "update.node_homeserver2_software_update",
+                "update.node_homeserver3_software_update"
+              ],
+              "view": "tiles"
+            },
+            {
+              "type": "ha-entities",
+              "title": "Szenzor elemek",
+              "entities": [
+                "sensor.garage_temp_battery",
+                "sensor.server_temp_elem_akku",
+                "sensor.indoor_temp_battery",
+                "sensor.outside_temp_elem_akku"
+              ],
+              "view": "tiles"
+            }
+          ]
+        },
+        {
+          "size": "full",
+          "widgets": [
+            {
+              "type": "network",
+              "title": "Hálózat",
+              "nodes": [
+                {
+                  "name": "Router",
+                  "kind": "router",
+                  "url": "http://192.168.0.1/"
+                },
+                {
+                  "name": "homeserver",
+                  "kind": "server",
+                  "entity": "sensor.node_homeserver_status",
+                  "proxmox": "homeserver"
+                },
+                {
+                  "name": "homeserver2",
+                  "kind": "server",
+                  "entity": "sensor.node_homeserver2_status",
+                  "proxmox": "homeserver2"
+                },
+                {
+                  "name": "homeserver3",
+                  "kind": "server",
+                  "entity": "sensor.node_homeserver3_status",
+                  "proxmox": "homeserver3"
+                },
+                {
+                  "name": "Home Assistant",
+                  "kind": "ha",
+                  "entity": "sensor.qemu_ha_110_status",
+                  "parent": "homeserver3"
+                },
+                {
+                  "name": "UPS",
+                  "kind": "ups",
+                  "entity": "sensor.ups_allapotadatok",
+                  "parent": "Home Assistant",
+                  "powers": [
+                    "Router",
+                    "homeserver",
+                    "homeserver2",
+                    "homeserver3",
+                    "NAS"
+                  ]
+                },
+                {
+                  "name": "NAS",
+                  "kind": "nas",
+                  "entity": "sensor.homenas_volume_1_status"
+                },
+                {
+                  "name": "NVR",
+                  "kind": "nvr",
+                  "url": "http://192.168.0.8/"
+                },
+                {
+                  "name": "Udvar",
+                  "kind": "camera",
+                  "entity": "camera.192_168_1_196"
+                },
+                {
+                  "name": "Bejárat",
+                  "kind": "camera",
+                  "entity": "camera.192_168_1_196_2"
+                },
+                {
+                  "name": "Műhely",
+                  "kind": "camera",
+                  "entity": "camera.192_168_1_8"
+                }
+              ]
+            },
+            {
+              "type": "monitor",
+              "title": "Media Services",
+              "sites": [
+                {
+                  "title": "Jellyfin",
+                  "url": "http://jellyfin.lan/"
+                },
+                {
+                  "title": "Seerr",
+                  "url": "http://seerr.lan/"
+                },
+                {
+                  "title": "Sonarr",
+                  "url": "http://sonarr.lan/"
+                },
+                {
+                  "title": "Radarr",
+                  "url": "http://radarr.lan/"
+                },
+                {
+                  "title": "Bazarr",
+                  "url": "http://bazarr.lan/"
+                },
+                {
+                  "title": "Prowlarr",
+                  "url": "http://prowlarr.lan/"
+                },
+                {
+                  "title": "qBittorrent",
+                  "url": "http://torrent.lan/"
+                },
+                {
+                  "title": "Calibre",
+                  "url": "http://calibre.lan/"
+                },
+                {
+                  "title": "Paperless",
+                  "url": "http://paperless.lan/"
+                }
+              ]
+            },
+            {
+              "type": "monitor",
+              "title": "Infrastructure",
+              "sites": [
+                {
+                  "title": "NAS (Synology)",
+                  "url": "http://192.168.0.2:5000/",
+                  "icon": "synology-dsm"
+                },
+                {
+                  "title": "Home Assistant",
+                  "url": "http://192.168.0.7:8123/"
+                },
+                {
+                  "title": "Nginx Proxy Manager",
+                  "url": "http://192.168.0.15:81/"
+                },
+                {
+                  "title": "Longhorn",
+                  "url": "http://longhorn.lan/"
+                }
+              ]
+            },
+            {
+              "type": "monitor",
+              "title": "Tools",
+              "sites": [
+                {
+                  "title": "Linkwarden",
+                  "url": "http://linkwarden.lan/"
+                },
+                {
+                  "title": "Firefly III",
+                  "url": "http://firefly.lan/",
+                  "checkUrl": "http://firefly.lan/favicon.ico"
+                },
+                {
+                  "title": "LubeLogger",
+                  "url": "http://lublogger.lan/"
+                },
+                {
+                  "title": "RomM",
+                  "url": "http://romm.lan/"
+                },
+                {
+                  "title": "Ntfy",
+                  "url": "https://notify.example.com/"
+                },
+                {
+                  "title": "Workout",
+                  "url": "http://workout.lan/"
+                },
+                {
+                  "title": "Tasks",
+                  "url": "http://task.lan/",
+                  "icon": "vikunja"
+                },
+                {
+                  "title": "Sparky",
+                  "url": "https://sparky.example.com/"
+                },
+                {
+                  "title": "Trek",
+                  "url": "http://trek.lan/",
+                  "checkUrl": "/reddit/up?url=http%3A%2F%2Ftrek.lan%2F"
+                }
+              ]
+            },
+            {
+              "type": "monitor",
+              "title": "Management",
+              "sites": [
+                {
+                  "title": "Pi-hole",
+                  "url": "http://pihole.lan/admin/"
+                },
+                {
+                  "title": "pgAdmin",
+                  "url": "http://pgadmin.lan/browser/"
+                },
+                {
+                  "title": "RustFS",
+                  "url": "http://rustFS.lan/",
+                  "checkUrl": "http://rustFS.lan/health"
+                },
+                {
+                  "title": "SSH Gateway",
+                  "url": "http://ssh.lan/",
+                  "icon": "terminal"
+                },
+                {
+                  "title": "Camera",
+                  "url": "http://192.168.0.8/"
+                },
+                {
+                  "title": "WireGuard",
+                  "url": "http://wg.lan/"
+                },
+                {
+                  "title": "Duplicati",
+                  "url": "http://duplicati.lan/"
+                }
+              ]
+            },
+            {
+              "type": "longhorn",
+              "title": "Longhorn"
+            }
+          ]
+        },
+        {
+          "size": "small",
+          "widgets": [
+            {
+              "type": "ha-entities",
+              "title": "Sonarr / Paperless",
+              "entities": [
+                "sensor.sonarr_hamarosan",
+                "sensor.sonarr_musorok",
+                "sensor.sonarr_sor",
+                "sensor.paperless_dokumentumok"
+              ],
+              "view": "tiles"
+            },
+            {
+              "type": "servers",
+              "title": "Proxmox",
+              "servers": [
+                {
+                  "name": "homeserver",
+                  "status": "sensor.node_homeserver_status",
+                  "cpu": "sensor.node_homeserver_cpu_used",
+                  "mem": "sensor.node_homeserver_memory_used_percentage"
+                },
+                {
+                  "name": "homeserver2",
+                  "status": "sensor.node_homeserver2_status",
+                  "cpu": "sensor.node_homeserver2_cpu_used",
+                  "mem": "sensor.node_homeserver2_memory_used_percentage"
+                },
+                {
+                  "name": "homeserver3",
+                  "status": "sensor.node_homeserver3_status",
+                  "cpu": "sensor.node_homeserver3_cpu_used",
+                  "mem": "sensor.node_homeserver3_memory_used_percentage"
+                }
+              ]
+            },
+            {
+              "type": "power",
+              "title": "Szerver fogyasztás",
+              "switch": "switch.server_plug_csatlakozo_1",
+              "power": "sensor.server_plug_teljesitmeny",
+              "current": "sensor.server_plug_aramerosseg",
+              "voltage": "sensor.server_plug_feszultseg",
+              "energy": "sensor.server_plug_teljes_energiamennyiseg"
+            },
+            {
+              "type": "servers",
+              "title": "Synology",
+              "servers": [
+                {
+                  "name": "homenas",
+                  "status": "sensor.homenas_volume_1_status",
+                  "cpu": "sensor.homenas_cpu_utilization_total",
+                  "mem": "sensor.homenas_memory_usage_real",
+                  "drives": [
+                    "sensor.homenas_drive_1_temperature",
+                    "sensor.homenas_drive_2_temperature"
+                  ],
+                  "extra": [
+                    "sensor.homenas_temperature",
+                    "sensor.homenas_volume_1_volume_used"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "ha-entities",
+              "title": "Synology hálózat",
+              "view": "tiles",
+              "entities": [
+                "sensor.homenas_download_throughput",
+                "sensor.homenas_upload_throughput"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Home",
+      "columns": [
+        {
+          "size": "small",
+          "widgets": [
+            {
+              "type": "ha-entities",
+              "title": "Hőmérséklet",
+              "entities": [
+                "sensor.indoor_temp_temperature",
+                "sensor.indoor_temp_humidity",
+                "sensor.outside_temp_homerseklet",
+                "sensor.outside_temp_paratartalom",
+                "sensor.garage_temp_temperature",
+                "sensor.server_temp_homerseklet"
+              ],
+              "view": "tiles"
+            },
+            {
+              "type": "ha-entities",
+              "title": "Kapcsolók",
+              "entities": [
+                "switch.sonoff_1001df1dc3",
+                "switch.sonoff_1001798dca",
+                "switch.smart_plug_csatlakozo_1",
+                "switch.sonoff_10007629fe",
+                "switch.sonoff_1000b10217",
+                "switch.szunyog_lampa_csatlakozo_1",
+                "switch.garage_light_switch_1",
+                "switch.psw_2ch_zt2s_kapcsolo_1",
+                "switch.psw_2ch_zt2s_kapcsolo_2"
+              ],
+              "view": "tiles"
+            },
+            {
+              "type": "purifier",
+              "title": "Légtisztító",
+              "fan": "fan.zhimi_cpa4_2d86_switch_status",
+              "pm25": "sensor.zhimi_cpa4_2d86_pm25_density",
+              "filter": "sensor.zhimi_cpa4_2d86_filter_life_level"
+            }
+          ]
+        },
+        {
+          "size": "full",
+          "widgets": [
+            {
+              "type": "ha-button"
+            },
+            {
+              "type": "camera",
+              "title": "Kamerák",
+              "refreshSec": 300,
+              "entities": [
+                "camera.192_168_1_196",
+                "camera.192_168_1_196_2",
+                "camera.192_168_1_8"
+              ]
+            },
+            {
+              "type": "climate",
+              "title": "Klíma és fűtés",
+              "entities": [
+                "climate.floor_heating",
+                "climate.air_conditioner_a",
+                "climate.air_conditioner_b"
+              ]
+            }
+          ]
+        },
+        {
+          "size": "small",
+          "widgets": [
+            {
+              "type": "clock-weather",
+              "entity": "weather.openweathermap"
+            },
+            {
+              "type": "devices",
+              "title": "Akkumulátorok",
+              "devices": [
+                {
+                  "name": "Galaxy S23",
+                  "level": "sensor.my_phone_battery_level",
+                  "state": "sensor.my_phone_battery_state"
+                },
+                {
+                  "name": "iPad",
+                  "kind": "tablet",
+                  "level": "sensor.my_ipad_battery_level",
+                  "state": "sensor.my_ipad_battery_state"
+                }
+              ]
+            },
+            {
+              "type": "ups",
+              "title": "UPS",
+              "status": "sensor.ups_allapotadatok",
+              "charge": "sensor.ups_akkumulator_toltottsege",
+              "load": "sensor.ups_terheles",
+              "input": "sensor.ups_bemeneti_feszultseg",
+              "output": "sensor.ups_kimeneti_feszultseg"
+            },
+            {
+              "type": "ha-entities",
+              "title": "Firefly III",
+              "entities": [
+                "sensor.firefly_havi_keret",
+                "sensor.firefly_havi_koltes",
+                "sensor.firefly_havi_maradek"
+              ],
+              "view": "tiles",
+              "gauge": {
+                "value": "sensor.firefly_havi_koltes",
+                "max": "sensor.firefly_havi_keret",
+                "label": "elköltve"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

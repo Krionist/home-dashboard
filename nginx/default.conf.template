@@ -1,0 +1,41 @@
+# camera snapshots: one fetch from HA per camera per 5 min, shared by every browser
+proxy_cache_path /var/cache/nginx/camera levels=1:2 keys_zone=camera:5m max_size=50m inactive=15m;
+
+server {
+  listen 80;
+  root /usr/share/nginx/html;
+
+  location / { try_files $uri /index.html; }
+  location = /config.json { add_header Cache-Control no-store; }
+
+  include /etc/nginx/feeds.conf;
+
+  # ponytail: upstreams resolve at nginx start; a missing service stops the pod (fine, k8s restarts it)
+  location /camera/ {
+    proxy_pass ${HA_UPSTREAM}/;
+    proxy_cache camera;
+    proxy_cache_key "$uri$arg_token";   # the HA token is part of the key, a wrong token never hits the cache
+    proxy_cache_valid 200 5m;
+    proxy_ignore_headers Cache-Control Expires Set-Cookie;
+    proxy_cache_lock on;
+    proxy_cache_use_stale error timeout updating;
+    expires 5m;
+    add_header X-Cache $upstream_cache_status;
+  }
+  location /reddit/ {
+    proxy_pass http://127.0.0.1:8082/;  # sidecar container in the same pod
+  }
+  location /longhorn/ {
+    proxy_pass http://longhorn-frontend.longhorn-system.svc.cluster.local/;
+  }
+  location /jellyfin/ {
+    proxy_set_header Authorization 'MediaBrowser Token="${JELLYFIN_TOKEN}"';
+    proxy_pass http://192.168.1.17:8096/;  # LXC outside the cluster
+  }
+  location /waqi/ {
+    set $args "token=${WAQI_TOKEN}";
+    proxy_ssl_server_name on;
+    proxy_set_header Host api.waqi.info;
+    proxy_pass https://api.waqi.info/;
+  }
+}

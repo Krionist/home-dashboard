@@ -1,0 +1,17 @@
+# Real dashboard config lives only in the cluster, not in git or the image.
+#   kubectl -n home-dashboard create configmap home-dashboard-config --from-file=config.json=app/public/config.json \
+#     --dry-run=client -o yaml | kubectl apply -f -
+# Then mount it over the placeholder in the Deployment's nginx container:
+spec:
+  template:
+    spec:
+      containers:
+        - name: nginx
+          volumeMounts:
+            - name: config
+              mountPath: /usr/share/nginx/html/config.json
+              subPath: config.json
+      volumes:
+        - name: config
+          configMap:
+            name: home-dashboard-config

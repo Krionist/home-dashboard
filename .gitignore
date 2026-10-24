@@ -1,0 +1,14 @@
+node_modules
+dist
+.angular
+.env
+# personal: real dashboard config (mount it as a ConfigMap; config.example.json is the template)
+app/public/config.json
+# local tool / editor config with LAN addresses
+.mcp.json
+# notes and one-off migration scripts full of entity ids / IPs
+docs/
+scripts/ha_widgets.json
+scripts/add_ha_widgets.py
+scripts/glance_to_config.py
+__pycache__/

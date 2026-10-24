@@ -1,0 +1,6 @@
+app/node_modules
+app/dist
+app/.angular
+.git
+**/.env
+app/public/config.json
