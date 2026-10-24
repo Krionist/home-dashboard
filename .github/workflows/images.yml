@@ -1,12 +1,12 @@
-# Build both images on every push to master and publish them to GitHub Container Registry:
+# Build both images when a version tag (v1.2.3) is pushed and publish them to GitHub Container Registry:
 #   ghcr.io/krionist/home-dashboard          (nginx + Angular app, repo root Dockerfile)
 #   ghcr.io/krionist/home-dashboard-sidecar  (reddit / uptime helper, sidecar/Dockerfile)
-# Tags: latest + full commit sha (pin the sha in the Deployment for a reproducible rollout).
+# Tags: the git tag (e.g. v1.2.3) + latest. Release: git tag v1.2.3 && git push origin v1.2.3
 name: images
 
 on:
   push:
-    branches: [master]
+    tags: ['v*']
   workflow_dispatch:
 
 permissions:
@@ -36,6 +36,6 @@ jobs:
           platforms: linux/amd64 # the cluster's Talos nodes are all amd64
           tags: |
             ghcr.io/krionist/${{ matrix.image }}:latest
-            ghcr.io/krionist/${{ matrix.image }}:${{ github.sha }}
+            ghcr.io/krionist/${{ matrix.image }}:${{ github.ref_name }}
           cache-from: type=gha,scope=${{ matrix.image }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image }}

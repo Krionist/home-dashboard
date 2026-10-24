@@ -38,7 +38,7 @@ app/        Angular app (widgets in src/app/widgets, config schema in src/app/co
 nginx/      nginx config template: SPA, API proxies, camera cache, RSS feed routes
 sidecar/    Python helper: Reddit JSON and /up checks, on 127.0.0.1:8082 inside the pod
 deploy/     Kubernetes Namespace, Deployment and Service
-.github/    CI: builds both images to ghcr.io on every push to master
+.github/    CI: builds both images to ghcr.io when a v* tag is pushed
 ```
 
 ## Configuration
@@ -72,10 +72,14 @@ For the Reddit feeds, also run the sidecar: `pip install -r sidecar/requirements
 
 ## Deployment (Kubernetes)
 
-On every push to `master`, `.github/workflows/images.yml` builds and pushes:
+Pushing a version tag builds and pushes both images through `.github/workflows/images.yml`, tagged with the version and `latest`:
 
 - `ghcr.io/krionist/home-dashboard`: nginx and the app
 - `ghcr.io/krionist/home-dashboard-sidecar`
+
+```sh
+git tag v1.0.0 && git push origin v1.0.0
+```
 
 First install:
 

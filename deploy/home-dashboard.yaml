@@ -6,7 +6,7 @@
 #     --dry-run=client -o yaml | kubectl apply -f -
 #   kubectl -n home-dashboard rollout restart deploy/home-dashboard   # subPath mounts don't pick up ConfigMap edits
 #
-# Images are built and pushed to ghcr.io by .github/workflows/images.yml on every push to master.
+# Images are built and pushed to ghcr.io by .github/workflows/images.yml when a v* tag is pushed.
 apiVersion: v1
 kind: Namespace
 metadata:
