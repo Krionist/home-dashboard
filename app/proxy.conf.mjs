@@ -34,6 +34,12 @@ export default {
     pathRewrite: { '^/jellyfin': '' },
     headers: { Authorization: `MediaBrowser Token="${process.env.JELLYFIN_TOKEN ?? ''}"` },
   },
+  ...Object.fromEntries(['sonarr', 'radarr'].map(a => [`/${a}`, {
+    target: `http://${a}.lan`,
+    changeOrigin: true,
+    pathRewrite: { [`^/${a}`]: '' },
+    headers: { 'X-Api-Key': process.env[`${a.toUpperCase()}_API_KEY`] ?? '' },
+  }])),
   '/waqi': {
     target: 'https://api.waqi.info',
     changeOrigin: true,

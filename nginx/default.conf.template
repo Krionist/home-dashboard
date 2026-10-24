@@ -34,6 +34,14 @@ server {
     proxy_set_header Authorization 'MediaBrowser Token="${JELLYFIN_TOKEN}"';
     proxy_pass http://192.168.1.17:8096/;  # LXC outside the cluster
   }
+  location /sonarr/ {
+    proxy_set_header X-Api-Key "${SONARR_API_KEY}";
+    proxy_pass http://sonarr-nodeport-service.sonarr.svc.cluster.local:8989/;
+  }
+  location /radarr/ {
+    proxy_set_header X-Api-Key "${RADARR_API_KEY}";
+    proxy_pass http://radarr-nodeport-service.radarr.svc.cluster.local:7878/;
+  }
   location /waqi/ {
     set $args "token=${WAQI_TOKEN}";
     proxy_ssl_server_name on;

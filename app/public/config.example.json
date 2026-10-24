@@ -642,11 +642,13 @@
                 },
                 {
                   "title": "Sonarr",
-                  "url": "http://sonarr.lan/"
+                  "url": "http://sonarr.lan/",
+                  "queue": "sonarr"
                 },
                 {
                   "title": "Radarr",
-                  "url": "http://radarr.lan/"
+                  "url": "http://radarr.lan/",
+                  "queue": "radarr"
                 },
                 {
                   "title": "Bazarr",

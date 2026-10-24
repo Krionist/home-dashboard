@@ -1,7 +1,7 @@
 # Home dashboard: nginx (Angular app + API proxies) and the reddit/uptime sidecar in one pod.
 #
 # Not in git, created by hand once (and again whenever they change):
-#   kubectl -n home-dashboard create secret generic home-dashboard-secrets --from-env-file=app/.env   # WAQI_TOKEN, JELLYFIN_TOKEN
+#   kubectl -n home-dashboard create secret generic home-dashboard-secrets --from-env-file=app/.env   # WAQI_TOKEN, JELLYFIN_TOKEN, SONARR_API_KEY, RADARR_API_KEY
 #   kubectl -n home-dashboard create configmap home-dashboard-config --from-file=config.json=app/public/config.json \
 #     --dry-run=client -o yaml | kubectl apply -f -
 #   kubectl -n home-dashboard rollout restart deploy/home-dashboard   # subPath mounts don't pick up ConfigMap edits
@@ -35,7 +35,7 @@ spec:
             - name: HA_UPSTREAM # camera snapshots are proxied (and cached) through nginx
               value: http://192.168.1.7:8123
           envFrom:
-            - secretRef: { name: home-dashboard-secrets } # WAQI_TOKEN, JELLYFIN_TOKEN → nginx templates
+            - secretRef: { name: home-dashboard-secrets } # WAQI_TOKEN, JELLYFIN_TOKEN, SONARR_API_KEY, RADARR_API_KEY → nginx templates
           volumeMounts:
             - name: config
               mountPath: /usr/share/nginx/html/config.json

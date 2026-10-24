@@ -706,6 +706,7 @@ button:hover .nav-ico.services .gear { transform: rotate(60deg); }
 .sev.medium, .sev.low { --c: var(--muted); }
 
 .lw-count { font: 10.5px var(--mono); letter-spacing: .06em; margin: -4px 0 6px; }
+.row.queue { padding: 3px 0 3px 26px; font-size: .85em; }
 .row .ilink { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .feed-item small.jf-new { color: var(--accent); }
 .feed-item small.jf-new::before { content: '● '; }

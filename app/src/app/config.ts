@@ -8,7 +8,7 @@ export type Widget =
   | { type: 'clock-weather'; entity: string }
   | { type: 'search'; bangs: Bang[] }
   | { type: 'bookmarks'; title?: string; groups: { title: string; links: Link[] }[] }
-  | { type: 'monitor'; title: string; sites: { title: string; url: string; checkUrl?: string; icon?: string }[] }
+  | { type: 'monitor'; title: string; sites: { title: string; url: string; checkUrl?: string; icon?: string; queue?: 'sonarr' | 'radarr' }[] }
   | { type: 'iframe'; title: string; url: string; height?: number }
   | { type: 'rss'; title: string; mode: 'merged' | 'tabs'; limit?: number; feeds: Feed[] }
   | { type: 'ha-entities'; title: string; entities: string[]; gauge?: { value: string; max: string; label?: string }; view?: 'tiles' }

@@ -63,7 +63,7 @@ const FOLD = 5; // items shown before "Még N" expands up to the widget's limit
       @if (w().mode === 'tabs') {
         <div class="subtabs" role="tablist">
           @for (t of tabs(); track t.name) {
-            <button role="tab" [attr.aria-selected]="t.name === tab()" [class.on]="t.name === tab()" (click)="tab.set(t.name)"
+            <button role="tab" [attr.aria-selected]="t.name === tab()" [class.on]="t.name === tab()" (click)="pick(t)"
               [title]="t.name" [style.--h]="hue(t.name)">
               <i>
                 @if (ICONS[t.icon]; as paths) {
@@ -112,10 +112,10 @@ export class RssWidget implements OnInit {
   });
   // feeds sharing a `tab` are merged into one tab, in config order
   readonly tabs = computed(() => {
-    const seen = new Map<string, { reddit: boolean; icon: string }>();
+    const seen = new Map<string, { reddit: boolean; icon: string; url: string }>();
     for (const f of this.w().feeds) {
       const reddit = f.url.startsWith('/reddit/');
-      if (!seen.has(f.tab ?? f.name)) seen.set(f.tab ?? f.name, { reddit, icon: f.icon ?? '' });
+      if (!seen.has(f.tab ?? f.name)) seen.set(f.tab ?? f.name, { reddit, icon: f.icon ?? '', url: f.url });
     }
     return [...seen].map(([name, t]) => ({ name, ...t }));
   });
@@ -134,6 +134,12 @@ export class RssWidget implements OnInit {
   ngOnInit() {
     this.tab.set(this.tabs()[0]?.name ?? '');
     poll(this.ref, 15 * 60_000, () => this.load());
+  }
+
+  // clicking the already selected reddit tab opens the subreddit (/reddit/r/x → reddit.com/r/x)
+  pick(t: { name: string; reddit: boolean; url: string }) {
+    if (t.reddit && t.name === this.tab()) window.open('https://www.reddit.com' + t.url.slice('/reddit'.length), '_blank', 'noopener');
+    else this.tab.set(t.name);
   }
 
   private async load() {
