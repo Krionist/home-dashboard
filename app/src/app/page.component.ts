@@ -22,16 +22,19 @@ import { TorrentWidget } from './widgets/torrent';
 import { ServersWidget } from './widgets/servers';
 import { UpsWidget } from './widgets/ups';
 import { WaqiWidget } from './widgets/waqi';
+import { HAS_ART, WidgetIcon } from './widgets/widget-icon';
 
 @Component({
   selector: 'app-page',
   imports: [BookmarksWidget, CalendarWidget, CameraWidget, ClimateWidget, ClockWeatherWidget, DevicesWidget, HaButtonWidget, HaEntitiesWidget, IframeWidget, LinkwardenWidget,
-    LonghornWidget, MonitorWidget, NetworkWidget, PiholeWidget, PowerWidget, PurifierWidget, RssWidget, SearchWidget, ServersWidget, TorrentWidget, UpsWidget, WaqiWidget],
+    LonghornWidget, MonitorWidget, NetworkWidget, PiholeWidget, PowerWidget, PurifierWidget, RssWidget, SearchWidget, ServersWidget, TorrentWidget, UpsWidget, WaqiWidget, WidgetIcon],
   template: `
     <div class="grid" [style.--cols]="cols()">
       @for (col of page().columns; track $index) {
         <div class="col" [class.main]="col.size === 'full'">
           @for (w of col.widgets; track $index) {
+            <!-- wrapper so the corner icon can sit over the widget's first card -->
+            <div class="wbox" [class.has-ico]="!HAS_ART.includes(w.type)">
             @switch (w.type) {
               @case ('clock-weather') { <app-clock-weather [w]="$any(w)" /> }
               @case ('search') { <app-search [w]="$any(w)" /> }
@@ -56,6 +59,8 @@ import { WaqiWidget } from './widgets/waqi';
               @case ('devices') { <app-devices [w]="$any(w)" /> }
               @case ('network') { <app-network [w]="$any(w)" /> }
             }
+            @if (!HAS_ART.includes(w.type)) { <app-widget-icon [type]="w.type" /> }
+            </div>
           }
         </div>
       }
@@ -63,5 +68,6 @@ import { WaqiWidget } from './widgets/waqi';
 })
 export class PageComponent {
   readonly page = input.required<Page>();
+  readonly HAS_ART = HAS_ART;
   readonly cols = computed(() => this.page().columns.map(c => (c.size === 'small' ? '300px' : 'minmax(0,1fr)')).join(' '));
 }
