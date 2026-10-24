@@ -1,0 +1,73 @@
+# Home dashboard: nginx (Angular app + API proxies) and the reddit/uptime sidecar in one pod.
+#
+# Not in git, created by hand once (and again whenever they change):
+#   kubectl -n home-dashboard create secret generic home-dashboard-secrets --from-env-file=app/.env   # WAQI_TOKEN, JELLYFIN_TOKEN
+#   kubectl -n home-dashboard create configmap home-dashboard-config --from-file=config.json=app/public/config.json \
+#     --dry-run=client -o yaml | kubectl apply -f -
+#   kubectl -n home-dashboard rollout restart deploy/home-dashboard   # subPath mounts don't pick up ConfigMap edits
+#
+# Images are built and pushed to ghcr.io by .github/workflows/images.yml on every push to master.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: home-dashboard
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-dashboard
+  namespace: home-dashboard
+  labels: { app: home-dashboard }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: home-dashboard }
+  template:
+    metadata:
+      labels: { app: home-dashboard }
+    spec:
+      containers:
+        - name: nginx
+          image: ghcr.io/krionist/home-dashboard:latest
+          imagePullPolicy: Always
+          ports: [{ name: http, containerPort: 80 }]
+          env:
+            - name: HA_UPSTREAM # camera snapshots are proxied (and cached) through nginx
+              value: http://192.168.1.7:8123
+          envFrom:
+            - secretRef: { name: home-dashboard-secrets } # WAQI_TOKEN, JELLYFIN_TOKEN → nginx templates
+          volumeMounts:
+            - name: config
+              mountPath: /usr/share/nginx/html/config.json
+              subPath: config.json
+          readinessProbe:
+            httpGet: { path: /, port: http }
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /, port: http }
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          resources:
+            requests: { cpu: 10m, memory: 32Mi }
+            limits: { memory: 128Mi }
+        - name: sidecar # reddit JSON + /up checks on 127.0.0.1:8082, reached only via nginx /reddit/
+          image: ghcr.io/krionist/home-dashboard-sidecar:latest
+          imagePullPolicy: Always
+          resources:
+            requests: { cpu: 10m, memory: 48Mi }
+            limits: { memory: 192Mi }
+      volumes:
+        - name: config
+          configMap: { name: home-dashboard-config }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-dashboard
+  namespace: home-dashboard
+  annotations:
+    metallb.io/loadBalancerIPs: 192.168.1.244 # fixed so a dashboard.lan DNS record can point at it
+spec:
+  type: LoadBalancer
+  selector: { app: home-dashboard }
+  ports: [{ name: http, port: 80, targetPort: http }]
