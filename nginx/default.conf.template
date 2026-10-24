@@ -13,6 +13,8 @@ server {
   # ponytail: upstreams resolve at nginx start; a missing service stops the pod (fine, k8s restarts it)
   location /camera/ {
     proxy_pass ${HA_UPSTREAM}/;
+    # HA answers 400 to X-Forwarded-For from a proxy not in its trusted_proxies (e.g. when NPM sits in front): don't forward it
+    proxy_set_header X-Forwarded-For "";
     proxy_cache camera;
     proxy_cache_key "$uri$arg_token";   # the HA token is part of the key, a wrong token never hits the cache
     proxy_cache_valid 200 5m;
