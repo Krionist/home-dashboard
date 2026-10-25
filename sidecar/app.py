@@ -25,6 +25,7 @@ cache: dict[str, tuple[float, list]] = {}
 
 
 def fetch_token() -> str:
+    session.cookies.clear()  # with old reddit cookies the homepage is served without the challenge
     home = session.get('https://www.reddit.com/')
     c, t = CHALLENGE.search(home.text), JSC_TOKEN.search(home.text)
     if not (c and t):
