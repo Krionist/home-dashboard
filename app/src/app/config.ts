@@ -24,7 +24,7 @@ export type Widget =
   | { type: 'ups'; title: string; status: string; charge: string; load: string; input: string; output: string }
   | { type: 'power'; title: string; switch: string; power: string; current: string; voltage: string; energy: string }
   | { type: 'ha-button'; title?: string; url?: string } // url defaults to haUrl
-  | { type: 'devices'; title: string; devices: { name: string; level: string; state: string; kind?: 'phone' | 'tablet' | 'watch' }[] }
+  | { type: 'devices'; title: string; devices: { name: string; level: string; state: string; charger?: string; kind?: 'phone' | 'tablet' | 'watch' }[] }
   | { type: 'network'; title: string; nodes: { name: string; kind: 'router' | 'server' | 'nas' | 'ups' | 'nvr' | 'camera' | 'ha'; entity?: string; url?: string; proxmox?: string; parent?: string; powers?: string[] }[] }
   // status from entity, else HTTP check of url; proxmox = PVE node name (load bars + click for guests); parent = data link target (by name); powers = nodes it feeds
   | { type: 'servers'; title: string; servers: { name: string; status: string; cpu: string; mem: string; drives?: string[]; extra?: string[] }[] };

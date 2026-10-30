@@ -947,13 +947,15 @@
                 {
                   "name": "S26 Ultra",
                   "level": "sensor.my_phone_battery_level",
-                  "state": "sensor.my_phone_battery_state"
+                  "state": "sensor.my_phone_battery_state",
+                  "charger": "sensor.my_phone_charger_type"
                 },
                 {
                   "name": "Watch Ultra",
                   "kind": "watch",
                   "level": "sensor.my_watch_battery_level",
-                  "state": "sensor.my_watch_battery_state"
+                  "state": "sensor.my_watch_battery_state",
+                  "charger": "sensor.my_watch_charger_type"
                 },
                 {
                   "name": "iPad",
