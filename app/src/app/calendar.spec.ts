@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { groupByDay, gridRange, monthGrid, todoEvents } from './calendar';
+import { groupByDay, gridRange, monthGrid, overdue, todoEvents } from './calendar';
 
 describe('monthGrid', () => {
   it('covers whole Monday-first weeks around the month (Oct 2026 starts on a Thursday)', () => {
@@ -68,5 +68,21 @@ describe('groupByDay', () => {
   });
   it('returns nothing for empty sources', () => {
     expect(groupByDay([{ label: 'X', events: [] }])).toEqual([]);
+  });
+});
+
+describe('overdue', () => {
+  const now = new Date('2026-10-30T12:00:00');
+  it('keeps open items due today or earlier, drops future and completed ones', () => {
+    const r = overdue([
+      { summary: 'old', due: '2026-10-01' },
+      { summary: 'today', due: '2026-10-30' },
+      { summary: 'later today', due: '2026-10-30T18:00:00' },
+      { summary: 'earlier today', due: '2026-10-30T08:00:00' },
+      { summary: 'tomorrow', due: '2026-10-31' },
+      { summary: 'done', due: '2026-10-01', status: 'completed' },
+      { summary: 'no due' },
+    ], now);
+    expect(r.map(t => t.summary)).toEqual(['old', 'today', 'earlier today']);
   });
 });

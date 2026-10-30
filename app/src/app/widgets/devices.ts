@@ -11,7 +11,7 @@ export const levelClass = (pct: number) => (pct <= 15 ? 'bad' : pct <= 35 ? 'war
 
 const LABEL = { charging: 'Töltődik', full: 'Feltöltve', idle: 'Merül' };
 
-// phone / tablet outlines whose screen fills up to the battery level; a wave rides the top, a bolt pulses while charging
+// phone / tablet / watch outlines whose screen fills up to the battery level; a wave rides the top, a bolt pulses while charging
 @Component({
   selector: 'app-devices',
   template: `
@@ -20,17 +20,21 @@ const LABEL = { charging: 'Töltődik', full: 'Feltöltve', idle: 'Merül' };
       <div class="dev-row">
         @for (d of devs(); track d.name; let i = $index) {
           <figure class="dev" [class]="'dev ' + d.cls + ' ' + d.state">
-            <svg [attr.viewBox]="d.tablet ? '0 0 96 120' : '0 0 64 120'" aria-hidden="true">
-              <defs><clipPath [attr.id]="'scr' + i"><rect [attr.x]="6" y="10" [attr.width]="d.w - 12" height="100" rx="5" /></clipPath></defs>
-              <rect class="frame" x="1" y="1" [attr.width]="d.w - 2" height="118" [attr.rx]="d.tablet ? 9 : 12" />
+            <svg [attr.viewBox]="'0 0 ' + d.w + ' 120'" aria-hidden="true">
+              <defs><clipPath [attr.id]="'scr' + i"><rect x="6" [attr.y]="d.watch ? 32 : 10" [attr.width]="d.w - 12" [attr.height]="d.watch ? 56 : 100" [attr.rx]="d.watch ? 11 : 5" /></clipPath></defs>
+              @if (d.watch) {
+                <rect class="strap" x="17" y="2" width="30" height="28" rx="6" /><rect class="strap" x="17" y="90" width="30" height="28" rx="6" />
+                <rect class="strap" x="62" y="52" width="3" height="16" rx="1.5" />
+              }
+              <rect class="frame" x="1" [attr.y]="d.watch ? 26 : 1" [attr.width]="d.w - 2" [attr.height]="d.watch ? 68 : 118" [attr.rx]="d.watch ? 18 : d.tablet ? 9 : 12" />
               <g [attr.clip-path]="'url(#scr' + i + ')'">
                 <rect class="screen" x="0" y="0" [attr.width]="d.w" height="120" />
-                <g class="fill" [style.transform]="'translateY(' + (110 - d.pct) + 'px)'">
+                <g class="fill" [style.transform]="'translateY(' + d.top + 'px)'">
                   <path class="wave" [attr.d]="wave(d.w)" />
                   <rect class="liquid" x="0" y="6" [attr.width]="d.w" height="120" />
                 </g>
               </g>
-              @if (!d.tablet) { <rect class="notch" [attr.x]="d.w / 2 - 6" y="4" width="12" height="3" rx="1.5" /> }
+              @if (d.watch) { } @else if (!d.tablet) { <rect class="notch" [attr.x]="d.w / 2 - 6" y="4" width="12" height="3" rx="1.5" /> }
               @else { <circle class="notch" [attr.cx]="d.w / 2" cy="5.5" r="1.6" /> }
               @if (d.state === 'charging') { <path class="bolt" [attr.transform]="'translate(' + (d.w / 2 - 9) + ' 46)'" d="M11 0L0 16h7l-2 12L18 10h-7l2-10z" /> }
             </svg>
@@ -53,7 +57,8 @@ export class DevicesWidget {
     return this.w().devices.map(d => {
       const pct = Math.max(0, Math.min(100, Math.round(Number(e[d.level]?.state) || 0)));
       const tablet = d.kind === 'tablet';
-      return { name: d.name, pct, tablet, w: tablet ? 96 : 64, state: chargeState(e[d.state]?.state), cls: levelClass(pct) };
+      const watch = d.kind === 'watch';
+      return { name: d.name, pct, tablet, watch, w: tablet ? 96 : 64, top: watch ? 84 - 0.56 * pct : 110 - pct, state: chargeState(e[d.state]?.state), cls: levelClass(pct) };
     });
   });
   // two periods of a sine-ish wave across the screen width, doubled so the CSS slide loops seamlessly

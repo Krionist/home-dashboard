@@ -37,6 +37,12 @@ export function todoEvents(items: TodoItem[], from: number, to: number): CalEven
   });
 }
 
+// open items due today or earlier (date-only due dates count for the whole of today)
+export function overdue(items: TodoItem[], now = new Date()): TodoItem[] {
+  const today = dayKey(now);
+  return items.filter(t => t.due && t.status !== 'completed' && (t.due.length === 10 ? t.due <= today : Date.parse(t.due) <= now.getTime()));
+}
+
 // HA gives all-day events as 'YYYY-MM-DD' and timed ones as ISO datetimes with an offset
 function split(raw: Start): { day: string; time: string } {
   const start = typeof raw === 'string' ? raw : (raw.dateTime ?? raw.date ?? '');

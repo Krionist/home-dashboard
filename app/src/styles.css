@@ -735,9 +735,10 @@ button:hover .nav-ico.services .gear { transform: rotate(60deg); }
 
 /* device batteries */
 .dev-row { display: flex; justify-content: space-around; align-items: flex-end; gap: 16px; padding-top: 4px; }
-.dev { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.dev { margin: 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .dev svg { height: 110px; width: auto; overflow: visible; }
 .dev .frame { fill: #15171b; stroke: var(--line-hi); stroke-width: 2; }
+.dev .strap { fill: #1c1f24; stroke: var(--line-hi); stroke-width: 1.5; }
 .dev .screen { fill: #0d0f12; }
 .dev .notch { fill: #2a2d33; }
 .dev .fill { transition: transform 1s cubic-bezier(.4,0,.2,1); }
@@ -751,7 +752,7 @@ button:hover .nav-ico.services .gear { transform: rotate(60deg); }
 .dev .bolt { fill: #fff; filter: drop-shadow(0 0 4px var(--c)); animation: breathe-o 1.2s ease-in-out infinite; }
 .dev figcaption { display: flex; flex-direction: column; align-items: center; gap: 1px; text-align: center; }
 .dev figcaption b { font-size: 16px; color: var(--c); }
-.dev figcaption span { font-size: 12.5px; }
+.dev figcaption span { font-size: 12.5px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dev figcaption small { font: 10px var(--mono); letter-spacing: .06em; }
 
 /* home-lab network map */
@@ -817,7 +818,7 @@ button:hover .nav-ico.services .gear { transform: rotate(60deg); }
 .wicon svg { width: 100%; height: 100%; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .wicon * { transform-box: fill-box; transform-origin: center; }
 .wbox.has-ico h2 { padding-right: 40px; }
-.wbox:hover .wicon { opacity: 1; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--accent) 50%, transparent)); }
+.wbox:hover .wicon { opacity: 1; filter: drop-shadow(0 0 2px color-mix(in srgb, var(--accent) 45%, transparent)); }
 .i-bookmarks .shine { animation: breathe-o 2.4s ease-in-out infinite; }
 .i-monitor .beat { stroke-dasharray: 40; animation: ico-draw 2.2s linear infinite; }
 .i-iframe .code { animation: breathe-o 2s ease-in-out infinite; }
@@ -845,3 +846,11 @@ button:hover .nav-ico.services .gear { transform: rotate(60deg); }
 @keyframes ico-drip { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(26px); opacity: 0; } }
 @keyframes ico-bob { 50% { transform: translateY(3px); } }
 @media (prefers-reduced-motion: reduce) { .wicon * { animation: none !important; } }
+
+/* ---------- overdue todo banner ---------- */
+.overdue { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 50; max-width: min(520px, calc(100vw - 24px)); display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px 14px; background: #1c0f12ee; border: 2px solid var(--bad); border-radius: 12px; box-shadow: 0 0 24px -6px var(--bad); backdrop-filter: blur(8px); font: 13px var(--mono); }
+.overdue ul { margin: 0; padding: 0; list-style: none; }
+.overdue a { color: var(--fg); text-decoration: none; }
+.overdue a:hover { text-decoration: underline; }
+.overdue button { flex: none; border: 0; background: transparent; color: var(--bad); cursor: pointer; font-size: 14px; padding: 0; }

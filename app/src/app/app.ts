@@ -3,14 +3,16 @@ import { ConfigService } from './config.service';
 import { HaService } from './ha.service';
 import { Background } from './background';
 import { PageComponent } from './page.component';
+import { OverdueBanner } from './overdue';
 
 @Component({
   selector: 'app-root',
-  imports: [Background, PageComponent],
+  imports: [Background, OverdueBanner, PageComponent],
   template: `
     <app-bg />
     @if (cfg.error() || ha.error()) { <p class="err">{{ cfg.error() }} {{ ha.error() }}</p> }
     @if (cfg.config(); as c) {
+      <app-overdue [config]="c" />
       <nav>
         <div class="seg" [style.--n]="c.pages.length" [style.--i]="tab()">
           <span class="seg-pill"></span>
