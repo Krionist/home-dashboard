@@ -4,15 +4,17 @@ import { HaService } from './ha.service';
 import { Background } from './background';
 import { PageComponent } from './page.component';
 import { OverdueBanner } from './overdue';
+import { LowBatteryBanner } from './low-battery';
 
 @Component({
   selector: 'app-root',
-  imports: [Background, OverdueBanner, PageComponent],
+  imports: [Background, OverdueBanner, LowBatteryBanner, PageComponent],
   template: `
     <app-bg />
     @if (cfg.error() || ha.error()) { <p class="err">{{ cfg.error() }} {{ ha.error() }}</p> }
     @if (cfg.config(); as c) {
       <app-overdue [config]="c" />
+      <app-low-battery [config]="c" />
       <nav>
         <div class="seg" [style.--n]="c.pages.length" [style.--i]="tab()">
           <span class="seg-pill"></span>

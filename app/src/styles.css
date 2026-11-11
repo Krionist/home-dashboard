@@ -232,6 +232,34 @@ button.switch.on::after { transform: translateX(16px); background: var(--accent)
 .gauge b { display: block; font: 300 30px/1 var(--mono); letter-spacing: -.03em; }
 .gauge small { font: 10.5px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
 
+/* calorie figure (SparkyFitness) */
+.sparky { display: flex; align-items: center; gap: 18px; }
+.sparky > div { display: grid; gap: 4px; }
+.sparky b { font: 300 26px/1 var(--mono); color: var(--c); }
+.sparky b small { font-size: 12px; color: var(--muted); }
+.human { width: 56px; height: 112px; flex: none; overflow: visible; }
+.human .level { fill: var(--c); opacity: .85; transition: y .8s ease, fill .4s; filter: drop-shadow(0 0 6px var(--c)); }
+.human .outline * { fill: none; stroke: #ffffff44; stroke-width: 1.4; }
+.sparky.cold { --c: #4da3ff; } .sparky.ok { --c: var(--ok); } .sparky.bad { --c: var(--bad); }
+
+.human-btn { border: 0; background: none; padding: 0; cursor: pointer; }
+.sparky-dlg { width: min(420px, calc(100vw - 24px)); max-height: 80vh; padding: 16px 18px; background: #14161aee; color: var(--fg); border: 1px solid var(--line); border-radius: 14px; backdrop-filter: blur(10px); font-size: 13px; }
+.sparky-dlg::backdrop { background: #0008; }
+.sparky-dlg header { display: flex; justify-content: space-between; align-items: center; }
+.sparky-dlg header h3 { margin: 0; font: 13px var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+.sparky-dlg header button { border: 0; background: none; color: var(--muted); cursor: pointer; }
+.sparky-dlg h4 { margin: 14px 0 4px; font: 12px var(--mono); }
+.sparky-dlg ul { margin: 0; padding: 0; list-style: none; }
+.sparky-dlg li { display: flex; justify-content: space-between; gap: 12px; padding: 3px 0; border-bottom: 1px solid var(--line); }
+.sparky-dlg li b { font: 12px var(--mono); }
+
+/* per-budget bars (Firefly) */
+.budgets { display: grid; gap: 9px; margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.budget { display: grid; grid-template-columns: 1fr auto; gap: 3px 10px; align-items: baseline; font-size: 13px; }
+.budget .meter { grid-column: 1 / -1; width: 100%; }
+.budget small { font: 10.5px var(--mono); text-align: right; }
+.budget small { grid-row: 1; grid-column: 2; }
+
 /* clock colon + AQI scale */
 .colon { animation: blink 2s steps(1) infinite; }
 .aqi-scale { position: relative; display: block; height: 6px; margin: 12px 0 4px; border-radius: 6px;
@@ -850,6 +878,8 @@ button:hover .nav-ico.services .gear { transform: rotate(60deg); }
 /* ---------- overdue todo banner ---------- */
 .overdue { position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 50; max-width: min(520px, calc(100vw - 24px)); display: flex; gap: 12px; align-items: flex-start;
   padding: 10px 14px; background: #1c0f12ee; border: 2px solid var(--bad); border-radius: 12px; box-shadow: 0 0 24px -6px var(--bad); backdrop-filter: blur(8px); font: 13px var(--mono); }
+.overdue.lowbat { top: auto; bottom: 12px; border-color: var(--warn); box-shadow: 0 0 24px -6px var(--warn); }
+.overdue.lowbat button { color: var(--warn); }
 .overdue ul { margin: 0; padding: 0; list-style: none; }
 .overdue a { color: var(--fg); text-decoration: none; }
 .overdue a:hover { text-decoration: underline; }

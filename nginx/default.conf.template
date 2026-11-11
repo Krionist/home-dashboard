@@ -42,6 +42,14 @@ server {
     proxy_set_header X-Api-Key "${RADARR_API_KEY}";
     proxy_pass http://radarr-nodeport-service.radarr.svc.cluster.local:7878/;
   }
+  location /firefly/ {
+    proxy_set_header Authorization "Bearer ${FIREFLY_TOKEN}";
+    proxy_pass http://firefly-service.firefly.svc.cluster.local:8080/;
+  }
+  location /sparky/ {
+    proxy_set_header x-api-key "${SPARKY_API_KEY}";
+    proxy_pass http://sparkyfitness-server.sparky.svc.cluster.local:3010/;
+  }
   location /waqi/ {
     set $args "token=${WAQI_TOKEN}";
     proxy_ssl_server_name on;

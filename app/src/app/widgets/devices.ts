@@ -1,4 +1,5 @@
 import { Component, computed, inject, input } from '@angular/core';
+import type { HassEntities } from 'home-assistant-js-websocket';
 import { W } from '../config';
 import { HaService } from '../ha.service';
 
@@ -9,6 +10,17 @@ export function chargeState(raw = '', plugged = false): 'charging' | 'full' | 'p
   return s === 'charging' ? 'charging' : s === 'full' ? 'full' : plugged ? 'plugged' : 'idle';
 }
 export const levelClass = (pct: number) => (pct <= 15 ? 'bad' : pct <= 35 ? 'warn' : 'ok');
+
+export const LOW_BATTERY = 25;
+/** phones and watches (not tablets) under LOW_BATTERY % that are not on a charger */
+export function lowBattery(devices: W<'devices'>['devices'], e: HassEntities): { name: string; pct: number }[] {
+  return devices.flatMap(d => {
+    const pct = Number(e[d.level]?.state);
+    const plugged = !!d.charger && !['none', 'unknown', 'unavailable', ''].includes(e[d.charger]?.state ?? 'none');
+    const cs = chargeState(e[d.state]?.state, plugged);
+    return d.kind !== 'tablet' && Number.isFinite(pct) && e[d.level]?.state.trim() !== '' && pct < LOW_BATTERY && (cs === 'idle') ? [{ name: d.name, pct }] : [];
+  });
+}
 
 const LABEL = { charging: 'Töltődik', full: 'Feltöltve', plugged: 'Csatlakoztatva', idle: 'Merül' };
 

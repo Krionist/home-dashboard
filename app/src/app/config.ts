@@ -11,7 +11,7 @@ export type Widget =
   | { type: 'monitor'; title: string; sites: { title: string; url: string; checkUrl?: string; icon?: string; queue?: 'sonarr' | 'radarr' }[] }
   | { type: 'iframe'; title: string; url: string; height?: number }
   | { type: 'rss'; title: string; mode: 'merged' | 'tabs'; limit?: number; feeds: Feed[] }
-  | { type: 'ha-entities'; title: string; entities: string[]; gauge?: { value: string; max: string; label?: string }; view?: 'tiles' }
+  | { type: 'ha-entities'; title: string; entities: string[]; gauge?: { value: string; max: string; label?: string }; view?: 'tiles'; budgets?: boolean }
   | { type: 'calendar'; title: string; entities: CalSource[] }
   | { type: 'longhorn'; title: string }
   | { type: 'linkwarden'; title: string; entity: string; recent?: number } // HA sensor with links/collections attributes
@@ -25,6 +25,7 @@ export type Widget =
   | { type: 'power'; title: string; switch: string; power: string; current: string; voltage: string; energy: string }
   | { type: 'ha-button'; title?: string; url?: string } // url defaults to haUrl
   | { type: 'devices'; title: string; devices: { name: string; level: string; state: string; charger?: string; kind?: 'phone' | 'tablet' | 'watch' }[] }
+  | { type: 'sparky'; title: string } // SparkyFitness daily calories via the /sparky proxy
   | { type: 'network'; title: string; nodes: { name: string; kind: 'router' | 'server' | 'nas' | 'ups' | 'nvr' | 'camera' | 'ha'; entity?: string; url?: string; proxmox?: string; parent?: string; powers?: string[] }[] }
   // status from entity, else HTTP check of url; proxmox = PVE node name (load bars + click for guests); parent = data link target (by name); powers = nodes it feeds
   | { type: 'servers'; title: string; servers: { name: string; status: string; cpu: string; mem: string; drives?: string[]; extra?: string[] }[] };
@@ -34,7 +35,7 @@ export interface Column { size: 'small' | 'full'; widgets: Widget[] }
 export interface Page { name: string; columns: Column[] }
 export interface Config { haUrl: string; pages: Page[] }
 
-const TYPES = ['clock-weather', 'search', 'bookmarks', 'monitor', 'iframe', 'rss', 'ha-entities', 'calendar', 'longhorn', 'linkwarden', 'waqi', 'camera', 'climate', 'servers', 'pihole', 'torrent', 'purifier', 'ups', 'power', 'ha-button', 'devices', 'network'];
+const TYPES = ['clock-weather', 'search', 'bookmarks', 'monitor', 'iframe', 'rss', 'ha-entities', 'calendar', 'longhorn', 'linkwarden', 'waqi', 'camera', 'climate', 'servers', 'pihole', 'torrent', 'purifier', 'ups', 'power', 'ha-button', 'devices', 'network', 'sparky'];
 
 // ponytail: shallow validation (type names only); add per-widget checks if config typos keep biting
 export function parseConfig(raw: unknown): Config {

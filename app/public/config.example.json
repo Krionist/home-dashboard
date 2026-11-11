@@ -869,6 +869,10 @@
           "size": "small",
           "widgets": [
             {
+              "type": "sparky",
+              "title": "Kalória"
+            },
+            {
               "type": "ha-entities",
               "title": "Hőmérséklet",
               "entities": [
@@ -983,6 +987,7 @@
                 "sensor.firefly_havi_maradek"
               ],
               "view": "tiles",
+              "budgets": true,
               "gauge": {
                 "value": "sensor.firefly_havi_koltes",
                 "max": "sensor.firefly_havi_keret",

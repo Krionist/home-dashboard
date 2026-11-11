@@ -20,6 +20,7 @@ import { RssWidget } from './widgets/rss';
 import { SearchWidget } from './widgets/search';
 import { TorrentWidget } from './widgets/torrent';
 import { ServersWidget } from './widgets/servers';
+import { SparkyWidget } from './widgets/sparky';
 import { UpsWidget } from './widgets/ups';
 import { WaqiWidget } from './widgets/waqi';
 import { HAS_ART, WidgetIcon } from './widgets/widget-icon';
@@ -27,7 +28,7 @@ import { HAS_ART, WidgetIcon } from './widgets/widget-icon';
 @Component({
   selector: 'app-page',
   imports: [BookmarksWidget, CalendarWidget, CameraWidget, ClimateWidget, ClockWeatherWidget, DevicesWidget, HaButtonWidget, HaEntitiesWidget, IframeWidget, LinkwardenWidget,
-    LonghornWidget, MonitorWidget, NetworkWidget, PiholeWidget, PowerWidget, PurifierWidget, RssWidget, SearchWidget, ServersWidget, TorrentWidget, UpsWidget, WaqiWidget, WidgetIcon],
+    LonghornWidget, MonitorWidget, NetworkWidget, PiholeWidget, PowerWidget, PurifierWidget, RssWidget, SearchWidget, ServersWidget, SparkyWidget, TorrentWidget, UpsWidget, WaqiWidget, WidgetIcon],
   template: `
     <div class="grid" [style.--cols]="cols()">
       @for (col of page().columns; track $index) {
@@ -57,6 +58,7 @@ import { HAS_ART, WidgetIcon } from './widgets/widget-icon';
               @case ('power') { <app-power [w]="$any(w)" /> }
               @case ('ha-button') { <app-ha-button [w]="$any(w)" /> }
               @case ('devices') { <app-devices [w]="$any(w)" /> }
+              @case ('sparky') { <app-sparky [w]="$any(w)" /> }
               @case ('network') { <app-network [w]="$any(w)" /> }
             }
             @if (!HAS_ART.includes(w.type)) { <app-widget-icon [type]="w.type" /> }

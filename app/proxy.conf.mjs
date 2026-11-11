@@ -40,6 +40,18 @@ export default {
     pathRewrite: { [`^/${a}`]: '' },
     headers: { 'X-Api-Key': process.env[`${a.toUpperCase()}_API_KEY`] ?? '' },
   }])),
+  '/firefly': {
+    target: 'http://firefly.lan',
+    changeOrigin: true,
+    pathRewrite: { '^/firefly': '' },
+    headers: { Authorization: `Bearer ${process.env.FIREFLY_TOKEN ?? ''}` },
+  },
+  '/sparky': {
+    target: 'http://192.168.1.230',
+    changeOrigin: true,
+    pathRewrite: { '^/sparky': '' },
+    headers: { 'x-api-key': process.env.SPARKY_API_KEY ?? '' },
+  },
   '/waqi': {
     target: 'https://api.waqi.info',
     changeOrigin: true,

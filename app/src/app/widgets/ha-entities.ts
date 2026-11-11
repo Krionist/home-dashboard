@@ -2,6 +2,8 @@ import { Component, DestroyRef, computed, effect, inject, input, signal, untrack
 import { W } from '../config';
 import { HaService } from '../ha.service';
 import { Row, sparkPath, toRows } from '../ha-rows';
+import { Budget, loadBudgets } from '../firefly';
+import { poll } from '../poll';
 
 type History = Record<string, { s: string }[]>;
 
@@ -23,6 +25,17 @@ type History = Record<string, { s: string }[]>;
             <path class="shine" d="M11 30v30" />
           </svg>
           <div><b>{{ 100 - g.pct }}%</b><small class="muted">maradt · {{ g.pct }}% {{ g.label }}</small></div>
+        </div>
+      }
+      @if (budgets().length) {
+        <div class="budgets">
+          @for (b of budgets(); track b.name) {
+            <div [class]="'budget ' + (b.pct > 100 ? 'bad' : b.pct > 80 ? 'warn' : 'ok')">
+              <span>{{ b.name }}</span>
+              <i class="meter"><b [style.width.%]="min100(b.pct)"></b></i>
+              <small class="muted">{{ b.spent.toLocaleString('hu-HU') }} / {{ b.limit.toLocaleString('hu-HU') }} · {{ b.pct }}%</small>
+            </div>
+          }
         </div>
       }
       @if (w().view === 'tiles') {
@@ -135,6 +148,7 @@ export class HaEntitiesWidget {
   readonly ha = inject(HaService);
   readonly w = input.required<W<'ha-entities'>>();
   readonly rows = computed(() => toRows(this.ha.entities(), this.w().entities));
+  readonly budgets = signal<Budget[]>([]);
   readonly spark = signal<Record<string, [string, string]>>({});
   readonly gauge = computed(() => {
     const g = this.w().gauge;
@@ -149,9 +163,13 @@ export class HaEntitiesWidget {
 
   constructor() {
     effect(() => { if (this.ha.connected()) untracked(() => this.loadHistory()); });
+    // ponytail: no error UI, a failed fetch keeps the last list (or none)
+    poll(inject(DestroyRef), 10 * 60_000, () => this.w().budgets && loadBudgets().then(b => this.budgets.set(b)).catch(() => {}));
     const id = setInterval(() => this.ha.connected() && this.loadHistory(), 10 * 60_000);
     inject(DestroyRef).onDestroy(() => clearInterval(id));
   }
+
+  min100(n: number) { return Math.min(100, n); }
 
   isLight(r: Row) {
     return r.id.startsWith('light.') || /light|lamp|lámpa|lampa|izzó/i.test(r.id + ' ' + r.name);
