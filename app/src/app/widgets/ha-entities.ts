@@ -1,4 +1,4 @@
-import { Component, DestroyRef, computed, effect, inject, input, signal, untracked } from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, effect, inject, input, signal, untracked } from '@angular/core';
 import { W } from '../config';
 import { HaService } from '../ha.service';
 import { Row, sparkPath, toRows } from '../ha-rows';
@@ -144,10 +144,11 @@ type History = Record<string, { s: string }[]>;
       }
     </section>`,
 })
-export class HaEntitiesWidget {
+export class HaEntitiesWidget implements OnInit {
   readonly ha = inject(HaService);
   readonly w = input.required<W<'ha-entities'>>();
   readonly rows = computed(() => toRows(this.ha.entities(), this.w().entities));
+  private readonly ref = inject(DestroyRef);
   readonly budgets = signal<Budget[]>([]);
   readonly spark = signal<Record<string, [string, string]>>({});
   readonly gauge = computed(() => {
@@ -163,13 +164,17 @@ export class HaEntitiesWidget {
 
   constructor() {
     effect(() => { if (this.ha.connected()) untracked(() => this.loadHistory()); });
-    // ponytail: no error UI, a failed fetch keeps the last list (or none)
-    poll(inject(DestroyRef), 10 * 60_000, () => this.w().budgets && loadBudgets().then(b => this.budgets.set(b)).catch(() => {}));
     const id = setInterval(() => this.ha.connected() && this.loadHistory(), 10 * 60_000);
     inject(DestroyRef).onDestroy(() => clearInterval(id));
   }
 
   min100(n: number) { return Math.min(100, n); }
+
+  // inputs are not set yet in the constructor (NG0950), so the poll starts here
+  ngOnInit() {
+    // ponytail: no error UI, a failed fetch keeps the last list (or none)
+    if (this.w().budgets) poll(this.ref, 10 * 60_000, () => loadBudgets().then(b => this.budgets.set(b)).catch(() => {}));
+  }
 
   isLight(r: Row) {
     return r.id.startsWith('light.') || /light|lamp|lámpa|lampa|izzó/i.test(r.id + ' ' + r.name);

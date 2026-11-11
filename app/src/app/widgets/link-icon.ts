@@ -1,6 +1,8 @@
 import { Component, computed, input, signal } from '@angular/core';
 
 const CDN = 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/';
+// hand-drawn icons in public/icons/ for sites dashboard-icons doesn't have (would 404 on the CDN)
+const LOCAL = ['lpmobile', 'neuronpedia', 'massgrave', 'ozeki', 'synthetic'];
 
 /** "NAS (Synology)" -> "nas"; overridable per link with `icon` in config.json */
 export function iconSlug(title: string): string {
@@ -27,6 +29,9 @@ export class LinkIcon {
   readonly title = input.required<string>();
   readonly icon = input<string>();
   readonly failed = signal(false);
-  readonly src = computed(() => CDN + (this.icon() ?? iconSlug(this.title())) + '.svg');
+  readonly src = computed(() => {
+    const slug = this.icon() ?? iconSlug(this.title());
+    return (LOCAL.includes(slug) ? 'icons/' : CDN) + slug + '.svg';
+  });
   readonly hue = computed(() => hue(this.title()));
 }
