@@ -962,10 +962,11 @@
                   "charger": "sensor.my_watch_charger_type"
                 },
                 {
-                  "name": "iPad",
+                  "name": "Tab S10 Ultra",
                   "kind": "tablet",
-                  "level": "sensor.my_ipad_battery_level",
-                  "state": "sensor.my_ipad_battery_state"
+                  "level": "sensor.my_tablet_battery_level",
+                  "state": "sensor.my_tablet_battery_state",
+                  "charger": "sensor.my_tablet_charger_type"
                 }
               ]
             },
