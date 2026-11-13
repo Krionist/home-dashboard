@@ -1,18 +1,38 @@
-import { Component, inject, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Component, computed, inject, signal } from '@angular/core';
 import { ConfigService } from './config.service';
 import { HaService } from './ha.service';
 import { Background } from './background';
 import { PageComponent } from './page.component';
 import { OverdueBanner } from './overdue';
 import { LowBatteryBanner } from './low-battery';
+import { kiosk } from './kiosk';
+import { WeatherAlert } from './weather-alert';
 
 @Component({
   selector: 'app-root',
-  imports: [Background, OverdueBanner, LowBatteryBanner, PageComponent],
+  imports: [DatePipe, Background, OverdueBanner, LowBatteryBanner, PageComponent, WeatherAlert],
   template: `
+    @if (k?.ringing()) {
+      <!-- live MJPEG straight from HA: the nginx /camera cache is minutes stale -->
+      <div class="doorbell" (click)="k!.ring(false)">
+        @if (doorbellSrc(); as src) { <img [src]="src" alt="Csengő kamera" /> }
+        <span>🔔 Csengetnek</span>
+      </div>
+    } @else if (k?.night()) {
+      <!-- AMOLED: drift a few px every minute against burn-in -->
+      <div class="night-clock" (click)="k!.test.set(false)" [style.translate]="drift(k!.now())">{{ k!.now() | date: 'HH:mm' }}</div>
+    } @else {
     <app-bg />
     @if (cfg.error() || ha.error()) { <p class="err">{{ cfg.error() }} {{ ha.error() }}</p> }
-    @if (cfg.config(); as c) {
+    @if (cfg.config()?.weatherAlert; as wa) { <app-weather-alert [entity]="wa.entity" [hours]="wa.hours ?? 6" /> }
+    @if (tablet && cfg.config()?.tablet; as t) {
+      <app-page class="tablet" [page]="t" />
+      <div class="night-test">
+        <button (click)="k!.test.set(true)">🌙 Éjszakai óra teszt</button>
+        @if (t.doorbell) { <button (click)="k!.ring()">🔔 Csengő teszt</button> }
+      </div>
+    } @else if (cfg.config(); as c) {
       <app-overdue [config]="c" />
       <app-low-battery [config]="c" />
       <nav>
@@ -44,15 +64,27 @@ import { LowBatteryBanner } from './low-battery';
       @for (p of [c.pages[tab()]]; track p.name) { <app-page [page]="p" /> }
     } @else if (!cfg.error()) {
       <div class="boot" aria-label="Betöltés"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" pathLength="100" /></svg></div>
+    }
     }`,
 })
 export class App {
   readonly cfg = inject(ConfigService);
   readonly ha = inject(HaService);
   readonly tab = signal(0);
+  readonly tablet = location.pathname.startsWith('/tablet');
+  readonly k = this.tablet ? kiosk(() => this.cfg.config()?.tablet?.brightness, () => this.cfg.config()?.tablet?.doorbell) : undefined;
+  readonly doorbellSrc = computed(() => {
+    const c = this.cfg.config(), cam = c?.tablet?.doorbell?.camera;
+    const pic = cam ? (this.ha.entities()[cam]?.attributes['entity_picture'] as string | undefined) : undefined;
+    return pic ? c!.haUrl + pic.replace('/api/camera_proxy/', '/api/camera_proxy_stream/') : '';
+  });
+  drift(d: Date) { const m = d.getHours() * 60 + d.getMinutes(); return `${(m * 37) % 61 - 30}px ${(m * 53) % 41 - 20}px`; }
   readonly navIcon = (name: string) => (/home|főoldal/i.test(name) ? 'home' : /servic|szolg/i.test(name) ? 'services' : 'grid');
 
   constructor() {
+    if (this.tablet) {
+      document.body.classList.add('tablet');
+    }
     this.cfg.load().then(() => {
       const c = this.cfg.config();
       if (c) this.ha.connect(c.haUrl);

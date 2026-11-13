@@ -28,6 +28,13 @@ Everything on the page comes from one `config.json`: tabs, columns and widgets. 
 | `monitor` | Up/down checks for web services |
 | `pihole`, `torrent`, `longhorn` | Pi-hole, qBittorrent and Longhorn status |
 | `iframe` | Embed any page |
+| `forecast` | Hourly + daily forecast chart; `mode: rain` shows the next 24 h of precipitation |
+| `temp-chart` | Several temperature sensors overlaid on one 24 h chart, optional humidity bar |
+| `todo-due` | Late and upcoming to-do items (Vikunja), tap to complete |
+
+## Tablet (`/tablet`)
+
+`config.json` → `tablet` is a separate page for a wall tablet in Fully Kiosk Browser (enable *JavaScript Interface* and *Keep Screen On*). It sets brightness by `sun.sun`, switches to a dim clock on black overnight (`brightness.nightClock`), and shows the doorbell camera full screen on a ring (`doorbell`). `weatherAlert` pops up storm/hail/downpour/wind warnings from the hourly forecast on both views.
 
 The background is an animated SVG scene that follows the real weather from HA: season, day/dusk/night, clouds, rain, snow, fog, lightning and wind. To preview a combination, add `?scene=winter,night,snowy` to the URL.
 

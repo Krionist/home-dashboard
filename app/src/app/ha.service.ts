@@ -47,4 +47,9 @@ export class HaService {
   ws<T>(msg: { type: string; [k: string]: unknown }) {
     return this.conn!.sendMessagePromise<T>(msg);
   }
+
+  // the library resubscribes on reconnect
+  subscribe<T>(msg: { type: string; [k: string]: unknown }, cb: (ev: T) => void) {
+    return this.conn!.subscribeMessage<T>(cb, msg);
+  }
 }

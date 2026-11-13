@@ -884,3 +884,94 @@ button:hover .nav-ico.services .gear { transform: rotate(60deg); }
 .overdue a { color: var(--fg); text-decoration: none; }
 .overdue a:hover { text-decoration: underline; }
 .overdue button { flex: none; border: 0; background: transparent; color: var(--bad); cursor: pointer; font-size: 14px; padding: 0; }
+
+/* /tablet: wall display, no nav, bigger type, no hover-only affordances */
+body.tablet { padding: 14px; }
+body.tablet .grid { gap: 14px; }
+body.tablet .col { gap: 14px; }
+body.tablet .clock { font-size: 72px; }
+body.tablet .clockface { justify-content: center; text-align: center; }
+
+/* forecast widget */
+.fc-hours { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(44px, 1fr); overflow-x: auto; gap: 4px; text-align: center; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.fc-hours > div { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.fc-hours small { font: 10.5px var(--mono); }
+.fc-chart { width: 100%; height: auto; margin-top: 12px; overflow: visible; }
+.fc-chart polyline { fill: none; stroke-width: 2; stroke-linejoin: round; }
+.fc-chart polyline.hi { stroke: var(--accent); } .fc-chart polyline.lo { stroke: #4aa8ff; }
+.fc-chart text { font: 10px var(--mono); text-anchor: middle; }
+.fc-chart text.hi { fill: var(--accent); } .fc-chart text.lo { fill: #4aa8ff; }
+.fc-chart .rain { fill: #4aa8ff33; }
+.fc-days { display: flex; text-align: center; }
+.fc-days > div { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 12px; }
+.fc-days b { font: 500 11px var(--mono); letter-spacing: .08em; }
+.fc-days span { font-size: 20px; }
+.fc-days small { font: 10px var(--mono); }
+.rainv { color: #4aa8ff; }
+
+/* temp-chart widget */
+.tc-chart { width: 100%; height: 140px; display: block; }
+.tc-chart polyline { fill: none; stroke-width: 2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.tc-grid { stroke: var(--line); vector-effect: non-scaling-stroke; }
+.tc-axis { display: flex; justify-content: space-between; font: 10px var(--mono); margin-top: 4px; }
+.tc-legend { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 10px 18px; margin-top: 12px; }
+.tc-legend > div { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.tc-legend i { width: 18px; height: 3px; border-radius: 2px; background: var(--c); }
+.tc-legend b { font-size: 22px; color: var(--c); }
+.tc-hum { display: grid; grid-template-columns: 1fr auto; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.tc-hum > i { grid-column: 1 / -1; height: 8px; border-radius: 4px; background: #ffffff0d; overflow: hidden; }
+.tc-hum > i > b { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, #3fd0c9, #4aa8ff); transition: width .6s; }
+
+/* forecast mode: rain */
+.rain-sum { font-size: 15px; margin-bottom: 12px; }
+.rain-bars { display: flex; gap: 2px; align-items: stretch; }
+.rain-bars > div { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 0; }
+.rain-bars small { font: 9px var(--mono); height: 12px; white-space: nowrap; }
+.rain-bars i { width: 100%; height: 70px; display: flex; align-items: flex-end; border-radius: 3px; background: #ffffff08; }
+.rain-bars i b { width: 100%; border-radius: 3px; background: #4aa8ff; transition: height .6s; }
+
+/* /tablet after 23:00: nothing but a dim clock on pure black (AMOLED pixels off) */
+.night-clock {
+  position: fixed; inset: 0; display: grid; place-items: center; z-index: 100; background: #000;
+  color: #fff; font: 200 22vw/1 var(--mono); letter-spacing: -.04em; font-variant-numeric: tabular-nums;
+}
+.night-test { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+/* forecast chart: halo behind labels so lines don't cut through them, columns stay one line */
+.fc-chart text { paint-order: stroke; stroke: var(--card-solid); stroke-width: 4px; stroke-linejoin: round; font-weight: 500; }
+.fc-chart circle.hi { fill: var(--accent); } .fc-chart circle.lo { fill: #4aa8ff; }
+.fc-chart .rain { fill: #4aa8ff26; }
+.fc-days > div { min-width: 0; }
+.fc-days small { white-space: nowrap; font-size: 9px; }
+
+/* /tablet doorbell: full-screen live camera for a few seconds, tap to close */
+.doorbell { position: fixed; inset: 0; z-index: 200; background: #000; display: grid; place-items: center; }
+.doorbell img { width: 100%; height: 100%; object-fit: contain; }
+.doorbell span {
+  position: absolute; top: 24px; left: 50%; translate: -50%; padding: 10px 22px; border-radius: 999px;
+  background: var(--accent); color: #000; font: 600 22px var(--sans); animation: blink 1.2s steps(1) infinite;
+}
+
+/* weather alert pop-up: frosted glass, top centre, above the page but below doorbell/night clock */
+.wx-alert {
+  position: fixed; top: 18px; left: 50%; translate: -50%; z-index: 90; display: flex; flex-direction: column; gap: 8px;
+  min-width: min(420px, calc(100vw - 32px)); padding: 16px 52px 16px 20px; border-radius: 16px;
+  background: #1a1d24a6; border: 1px solid var(--line-hi); backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 20px 50px -15px #000e; animation: wx-in .4s cubic-bezier(.2,.7,.2,1) both;
+}
+.wx-a { display: flex; align-items: center; gap: 12px; font-size: 16px; }
+.wx-a span { font-size: 28px; }
+.wx-a.bad b { color: var(--bad); } .wx-a.warn b { color: var(--accent); }
+.wx-alert button { position: absolute; top: 10px; right: 10px; width: 32px; height: 32px; padding: 0; border-radius: 50%; }
+body.tablet .wx-alert { top: 30px; padding: 22px 60px 22px 26px; }
+body.tablet .wx-a { font-size: 22px; } body.tablet .wx-a span { font-size: 38px; }
+@keyframes wx-in { from { opacity: 0; translate: -50% -16px; } }
+
+/* todo-due widget */
+.row.due { align-items: center; justify-content: flex-start; }
+.due-sum { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row.due .val { color: var(--muted); white-space: nowrap; }
+.row.due.today .val { color: var(--accent); }
+.row.due.late .val, .row.due.late .due-sum { color: var(--bad); }
+.chk { flex: none; width: 26px; height: 26px; padding: 0; border-radius: 7px; border: 2px solid var(--line-hi); background: none; }
+.row.due.late .chk { border-color: var(--bad); }
+.chk:active { background: var(--ok); border-color: var(--ok); }

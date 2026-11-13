@@ -1,5 +1,9 @@
 {
   "haUrl": "http://homeassistant.local:8123",
+  "weatherAlert": {
+    "entity": "weather.openweathermap",
+    "hours": 6
+  },
   "pages": [
     {
       "name": "News",
@@ -878,8 +882,8 @@
               "entities": [
                 "sensor.indoor_temp_temperature",
                 "sensor.indoor_temp_humidity",
-                "sensor.outside_temp_homerseklet",
-                "sensor.outside_temp_paratartalom",
+                "sensor.t_h_sensor_with_external_probe_szonda_homerseklete",
+                "sensor.t_h_sensor_with_external_probe_paratartalom",
                 "sensor.garage_temp_temperature",
                 "sensor.server_temp_homerseklet"
               ],
@@ -999,5 +1003,147 @@
         }
       ]
     }
-  ]
+  ],
+  "tablet": {
+    "name": "Tablet",
+    "brightness": {
+      "day": 200,
+      "night": 20
+    },
+    "doorbell": {
+      "event": "event.ac_doorbell_doorbell_message",
+      "camera": "camera.ac_doorbell",
+      "seconds": 30
+    },
+    "columns": [
+      {
+        "size": "full",
+        "widgets": [
+          {
+            "type": "forecast",
+            "title": "Előrejelzés",
+            "entity": "weather.openweathermap"
+          },
+          {
+            "type": "forecast",
+            "title": "Eső (24 óra)",
+            "entity": "weather.openweathermap",
+            "mode": "rain"
+          },
+          {
+            "type": "calendar",
+            "title": "Naptár",
+            "entities": [
+              {
+                "id": "calendar.synology_naptar",
+                "label": "Synology",
+                "color": "#5b9cf5"
+              },
+              {
+                "id": "calendar.sonarr",
+                "label": "Sonarr",
+                "color": "#4cc38a"
+              },
+              {
+                "id": "calendar.radarr",
+                "label": "Radarr",
+                "color": "#b180f0"
+              },
+              {
+                "kind": "todo",
+                "label": "Feladat",
+                "color": "#f0c040",
+                "ids": [
+                  "todo.inbox",
+                  "todo.inbox_2",
+                  "todo.elektronikai",
+                  "todo.eskuvo",
+                  "todo.hazvasarlas",
+                  "todo.karbantartas",
+                  "todo.learning",
+                  "todo.nyaralas",
+                  "todo.prius",
+                  "todo.selfhosted"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "size": "full",
+        "widgets": [
+          {
+            "type": "clock-weather",
+            "entity": "weather.openweathermap"
+          },
+          {
+            "type": "temp-chart",
+            "title": "Hőmérséklet",
+            "entities": [
+              "sensor.t_h_sensor_with_external_probe_szonda_homerseklete",
+              "sensor.indoor_temp_temperature",
+              "sensor.garage_temp_temperature"
+            ],
+            "humidity": "sensor.t_h_sensor_with_external_probe_paratartalom"
+          },
+          {
+            "type": "iframe",
+            "title": "Radar",
+            "url": "https://embed.windy.com/embed2.html?lat=47.347&lon=21.567&detailLat=47.347&detailLon=21.567&zoom=8&level=surface&overlay=radar&product=radar&menu=&message=true&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1",
+            "height": 420
+          }
+        ]
+      },
+      {
+        "size": "full",
+        "widgets": [
+          {
+            "type": "climate",
+            "title": "Fűtés",
+            "entities": [
+              "climate.floor_heating"
+            ]
+          },
+          {
+            "type": "climate",
+            "title": "Klíma",
+            "entities": [
+              "climate.air_conditioner_a"
+            ]
+          },
+          {
+            "type": "waqi",
+            "title": "Air Quality",
+            "lat": 47.347005304269494,
+            "lon": 21.566565115732438
+          },
+          {
+            "type": "purifier",
+            "title": "Légtisztító",
+            "fan": "fan.zhimi_cpa4_2d86_switch_status",
+            "pm25": "sensor.zhimi_cpa4_2d86_pm25_density",
+            "filter": "sensor.zhimi_cpa4_2d86_filter_life_level"
+          },
+          {
+            "type": "todo-due",
+            "title": "Határidők",
+            "entities": [
+              "todo.inbox",
+              "todo.inbox_2",
+              "todo.elektronikai",
+              "todo.eskuvo",
+              "todo.hazvasarlas",
+              "todo.karbantartas",
+              "todo.learning",
+              "todo.nyaralas",
+              "todo.prius",
+              "todo.selfhosted"
+            ],
+            "days": 7
+          }
+        ]
+      }
+    ]
+  }
 }

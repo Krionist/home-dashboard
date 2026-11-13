@@ -5,6 +5,9 @@ import { CalendarWidget } from './widgets/calendar';
 import { CameraWidget } from './widgets/camera';
 import { ClimateWidget } from './widgets/climate';
 import { ClockWeatherWidget } from './widgets/clock-weather';
+import { ForecastWidget } from './widgets/forecast';
+import { TempChartWidget } from './widgets/temp-chart';
+import { TodoDueWidget } from './widgets/todo-due';
 import { DevicesWidget } from './widgets/devices';
 import { HaButtonWidget } from './widgets/ha-button';
 import { HaEntitiesWidget } from './widgets/ha-entities';
@@ -27,8 +30,8 @@ import { HAS_ART, WidgetIcon } from './widgets/widget-icon';
 
 @Component({
   selector: 'app-page',
-  imports: [BookmarksWidget, CalendarWidget, CameraWidget, ClimateWidget, ClockWeatherWidget, DevicesWidget, HaButtonWidget, HaEntitiesWidget, IframeWidget, LinkwardenWidget,
-    LonghornWidget, MonitorWidget, NetworkWidget, PiholeWidget, PowerWidget, PurifierWidget, RssWidget, SearchWidget, ServersWidget, SparkyWidget, TorrentWidget, UpsWidget, WaqiWidget, WidgetIcon],
+  imports: [BookmarksWidget, CalendarWidget, CameraWidget, ClimateWidget, ClockWeatherWidget, DevicesWidget, ForecastWidget, HaButtonWidget, HaEntitiesWidget, IframeWidget, LinkwardenWidget,
+    LonghornWidget, MonitorWidget, NetworkWidget, PiholeWidget, PowerWidget, PurifierWidget, RssWidget, SearchWidget, ServersWidget, SparkyWidget, TempChartWidget, TodoDueWidget, TorrentWidget, UpsWidget, WaqiWidget, WidgetIcon],
   template: `
     <div class="grid" [style.--cols]="cols()">
       @for (col of page().columns; track $index) {
@@ -58,6 +61,9 @@ import { HAS_ART, WidgetIcon } from './widgets/widget-icon';
               @case ('power') { <app-power [w]="$any(w)" /> }
               @case ('ha-button') { <app-ha-button [w]="$any(w)" /> }
               @case ('devices') { <app-devices [w]="$any(w)" /> }
+              @case ('forecast') { <app-forecast [w]="$any(w)" /> }
+              @case ('temp-chart') { <app-temp-chart [w]="$any(w)" /> }
+              @case ('todo-due') { <app-todo-due [w]="$any(w)" /> }
               @case ('sparky') { <app-sparky [w]="$any(w)" /> }
               @case ('network') { <app-network [w]="$any(w)" /> }
             }

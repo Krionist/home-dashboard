@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 
 // widgets that already draw their own header art (or are an icon themselves) get none
-export const HAS_ART = ['rss', 'camera', 'calendar', 'search', 'clock-weather', 'ha-button', 'sparky'];
+export const HAS_ART = ['rss', 'camera', 'calendar', 'search', 'clock-weather', 'ha-button', 'sparky', 'forecast', 'todo-due'];
 
 // small animated line icon in a card's top-right corner, one per widget type
 @Component({
