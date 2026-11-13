@@ -5,7 +5,8 @@ export interface Feed { name: string; url: string; kind?: 'json' | 'jellyfin'; t
 // a calendar entity, or a set of todo lists (items with a due date show up as events)
 export type CalSource = { id: string; label: string; color?: string } | { kind: 'todo'; ids: string[]; label: string; color?: string; url?: string } // url: where the overdue banner links to;
 
-export type Widget =
+// compact: slimmer variant (fewer labels) where the widget has one
+export type Widget = { compact?: boolean } & (
   | { type: 'clock-weather'; entity: string }
   | { type: 'search'; bangs: Bang[] }
   | { type: 'bookmarks'; title?: string; groups: { title: string; links: Link[] }[] }
@@ -32,7 +33,7 @@ export type Widget =
   | { type: 'sparky'; title: string } // SparkyFitness daily calories via the /sparky proxy
   | { type: 'network'; title: string; nodes: { name: string; kind: 'router' | 'server' | 'nas' | 'ups' | 'nvr' | 'camera' | 'ha'; entity?: string; url?: string; proxmox?: string; parent?: string; powers?: string[] }[] }
   // status from entity, else HTTP check of url; proxmox = PVE node name (load bars + click for guests); parent = data link target (by name); powers = nodes it feeds
-  | { type: 'servers'; title: string; servers: { name: string; status: string; cpu: string; mem: string; drives?: string[]; extra?: string[] }[] };
+  | { type: 'servers'; title: string; servers: { name: string; status: string; cpu: string; mem: string; drives?: string[]; extra?: string[] }[] });
 
 export type W<T extends Widget['type']> = Extract<Widget, { type: T }>;
 export interface Column { size: 'small' | 'full'; widgets: Widget[] }

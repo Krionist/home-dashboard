@@ -62,6 +62,13 @@ export class EditService {
     });
   }
 
+  toggleCompact(key: PageKey, col: number, i: number) {
+    this.change(key, p => {
+      const w = p.columns[col].widgets[i];
+      if (w.compact) delete w.compact; else w.compact = true;
+    });
+  }
+
   add(key: PageKey, col: number, w: Widget) {
     this.change(key, p => p.columns[col].widgets.push(structuredClone(w)));
   }

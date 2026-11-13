@@ -54,7 +54,9 @@ const has = (s: string, ...k: string[]) => k.includes(s);
             <small class="muted">💧 {{ e.attributes['humidity'] }}% · 💨 {{ e.attributes['wind_speed'] ?? '–' }} {{ e.attributes['wind_speed_unit'] ?? '' }}</small>
           </div>
         </div>
-        @if (sunArc(); as a) {
+        @if (w().compact && sunArc(); as a) {
+          <div class="sun-mini muted">☀ ↑ {{ a.rise }} · ↓ {{ a.set }}</div>
+        } @else if (sunArc(); as a) {
           <svg class="sunpath" viewBox="0 0 200 44" aria-hidden="true">
             <path class="arc" d="M10 40Q100 -16 190 40" />
             <line class="horizon" x1="0" y1="40" x2="200" y2="40" />

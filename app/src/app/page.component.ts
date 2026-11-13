@@ -46,6 +46,9 @@ import { HAS_ART, WidgetIcon } from './widgets/widget-icon';
                 <button (click)="ed.move(key(), ci, $index, 1, 0)" aria-label="Le">↓</button>
                 <button (click)="ed.move(key(), ci, $index, 0, -1)" aria-label="Balra">←</button>
                 <button (click)="ed.move(key(), ci, $index, 0, 1)" aria-label="Jobbra">→</button>
+                @if (COMPACT.includes(w.type)) {
+                  <button [class.on]="w.compact" (click)="ed.toggleCompact(key(), ci, $index)" aria-label="Kompakt" title="Kompakt nézet">◱</button>
+                }
                 <button class="del" (click)="ed.remove(key(), ci, $index)" aria-label="Törlés">✕</button>
               </div>
             }
@@ -120,5 +123,6 @@ export class PageComponent {
     }
   }
   readonly HAS_ART = HAS_ART;
+  readonly COMPACT = ['clock-weather', 'waqi', 'forecast', 'temp-chart']; // widgets with a compact variant
   readonly cols = computed(() => this.page().columns.map(c => (c.size === 'small' ? '300px' : 'minmax(0,1fr)')).join(' '));
 }

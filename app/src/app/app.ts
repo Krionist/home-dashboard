@@ -69,7 +69,7 @@ import { EditService } from './edit.service';
           }
         </div>
         @if (!ha.connected()) { <span class="err">HA offline</span> }
-        @if (!ed.on()) { <button class="edit-btn" (click)="ed.start()" aria-label="Szerkesztés">✏️</button> }
+        @if (!ed.on()) { <button class="edit-btn" (click)="ed.start()">✏️ Szerkesztés</button> }
       </nav>
       <!-- recreated per tab so the cards replay their entrance animation -->
       @for (p of [c.pages[tab()]]; track p.name) { <app-page [page]="p" [key]="tab()" /> }

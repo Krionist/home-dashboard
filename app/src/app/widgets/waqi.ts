@@ -7,7 +7,9 @@ import { poll } from '../poll';
   template: `
     <section class="card">
       <h2>{{ w().title }}</h2>
-      @if (aqi(); as a) {
+      @if (w().compact && aqi(); as a) {
+        <div class="aqi-mini"><i class="aqi-scale"><b [style.left.%]="a > 300 ? 100 : a / 3"></b></i><b class="val">{{ a }}</b></div>
+      } @else if (aqi(); as a) {
         <div class="clock">{{ a }} <small class="muted">AQI</small></div>
         <i class="aqi-scale"><b [style.left.%]="a > 300 ? 100 : a / 3"></b></i>
       }

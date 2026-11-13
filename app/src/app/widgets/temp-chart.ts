@@ -21,12 +21,12 @@ const VW = 300, VH = 110, HOURS = 24;
       }
       <div class="tc-legend">
         @for (n of now(); track n.id) {
-          <div [style.--c]="n.color"><i></i><span class="muted">{{ n.name }}</span><b class="val">{{ n.value }}</b></div>
+          <div [style.--c]="n.color" [title]="n.name"><i></i>@if (!w().compact) { <span class="muted">{{ n.name }}</span> }<b class="val">{{ n.value }}</b></div>
         }
       </div>
       @if (humidity(); as h) {
         <div class="tc-hum">
-          <span class="muted">💧 Páratartalom</span><b class="val">{{ h }}%</b>
+          <span class="muted">💧@if (!w().compact) { Páratartalom }</span><b class="val">{{ h }}%</b>
           <i><b [style.width.%]="h"></b></i>
         </div>
       }

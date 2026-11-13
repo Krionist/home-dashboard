@@ -977,7 +977,7 @@ body.tablet .wx-a { font-size: 22px; } body.tablet .wx-a span { font-size: 38px;
 .chk:active { background: var(--ok); border-color: var(--ok); }
 
 /* edit mode: per-widget toolbar, add panel, sticky save bar */
-.wedit { display: flex; gap: 4px; justify-content: flex-end; margin-bottom: -14px; position: relative; z-index: 5; }
+.wbox > .wedit { display: flex; flex-direction: row; gap: 4px; justify-content: flex-end; margin-bottom: -14px; position: relative; z-index: 5; }
 .wedit button { width: 34px; height: 30px; padding: 0; font-size: 15px; }
 .wedit .del { color: var(--bad); border-color: var(--bad); }
 .wbox:has(.wedit) > :not(.wedit) { outline: 1px dashed var(--accent); outline-offset: 4px; border-radius: 14px; }
@@ -990,3 +990,9 @@ body.tablet .wx-a { font-size: 22px; } body.tablet .wx-a span { font-size: 38px;
   padding: 10px 14px 10px 20px; border-radius: 14px; background: #1a1d24e6; border: 1px solid var(--accent); backdrop-filter: blur(12px);
 }
 .edit-btn { margin-left: auto; }
+
+/* compact variants */
+.sun-mini { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); font: 12px var(--mono); text-align: center; }
+.aqi-mini { display: flex; align-items: center; gap: 12px; }
+.aqi-mini .aqi-scale { flex: 1; margin: 0; }
+.aqi-mini > .val { font-size: 18px; }
