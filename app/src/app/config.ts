@@ -7,7 +7,7 @@ export type CalSource = { id: string; label: string; color?: string } | { kind: 
 
 // compact: slimmer variant (fewer labels) where the widget has one
 export type Widget = { compact?: boolean } & (
-  | { type: 'clock-weather'; entity: string }
+  | { type: 'clock-weather'; entity: string; big?: boolean } // big: time only, filling the card
   | { type: 'search'; bangs: Bang[] }
   | { type: 'bookmarks'; title?: string; groups: { title: string; links: Link[] }[] }
   | { type: 'monitor'; title: string; sites: { title: string; url: string; checkUrl?: string; icon?: string; queue?: 'sonarr' | 'radarr' }[] }

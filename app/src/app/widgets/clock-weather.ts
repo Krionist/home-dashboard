@@ -15,7 +15,12 @@ const has = (s: string, ...k: string[]) => k.includes(s);
   selector: 'app-clock-weather',
   imports: [DatePipe],
   template: `
-    <section class="card">
+    <section class="card" [class.clock-big]="w().big">
+      @if (w().big) {
+        <!-- wall view: just the time, as large as the panel allows -->
+        <div class="big-time">{{ now() | date: 'HH' }}<span class="colon">:</span>{{ now() | date: 'mm' }}</div>
+        <div class="big-date muted">{{ huDate(now()) }}</div>
+      } @else {
       <div class="clockface">
         <svg viewBox="0 0 64 64" class="analog">
           <circle class="face" cx="32" cy="32" r="30" />
@@ -65,6 +70,7 @@ const has = (s: string, ...k: string[]) => k.includes(s);
           </svg>
         }
       }
+      }
     </section>`,
 })
 export class ClockWeatherWidget {
@@ -73,6 +79,7 @@ export class ClockWeatherWidget {
   readonly now = signal(new Date());
   readonly weather = computed(() => this.ha.entities()[this.w().entity]);
   readonly label = (s: string) => LABEL[s] ?? s;
+  readonly huDate = (d: Date) => d.toLocaleDateString('hu-HU', { weekday: 'long', month: 'long', day: 'numeric' });
   readonly L = computed(() => {
     const s = this.weather()?.state ?? '';
     return {

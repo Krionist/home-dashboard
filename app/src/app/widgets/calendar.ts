@@ -12,6 +12,18 @@ const WEEKDAYS = ['H', 'K', 'Sze', 'Cs', 'P', 'Szo', 'V'];
   selector: 'app-calendar',
   template: `
     <section class="card">
+      @if (w().compact) {
+        <h2>{{ w().title }}</h2>
+        @for (d of upcoming(); track d.day) {
+          <div class="day">{{ d.day === today ? 'Ma' : dayLabel(d.day) }}</div>
+          @for (i of d.items; track $index) {
+            <div class="row">
+              <span><b class="pip" [style.background]="colors()[i.label]"></b>{{ i.summary }}</span>
+              <b class="val muted">{{ i.time }}</b>
+            </div>
+          }
+        } @empty { <div class="muted">Nincs közelgő esemény</div> }
+      } @else {
       <div class="cam-head">
         <h2>{{ w().title }}</h2>
         <!-- desk calendar showing the selected day; the page flips in whenever the day changes -->
@@ -54,6 +66,7 @@ const WEEKDAYS = ['H', 'K', 'Sze', 'Cs', 'P', 'Szo', 'V'];
       } @empty {
         <div class="muted">Nincs esemény</div>
       }
+      }
       @if (failed().length) { <div class="err">Failed: {{ failed().join(', ') }}</div> }
     </section>`,
 })
@@ -71,6 +84,8 @@ export class CalendarWidget {
   // day -> the sources that have something on it (one coloured dot each)
   readonly busy = computed(() => new Map(this.days().map(d => [d.day, [...new Set(d.items.map(i => i.label))]])));
   readonly colors = computed(() => Object.fromEntries(this.w().entities.map(e => [e.label, e.color ?? '#8b8d94'])));
+  // compact: the next few days that have something on them, today first
+  readonly upcoming = computed(() => this.days().filter(d => d.day >= this.today).slice(0, 4));
   readonly items = computed(() => this.days().find(d => d.day === this.selected())?.items ?? []);
   readonly sel = computed(() => {
     const d = new Date(`${this.selected()}T12:00`);

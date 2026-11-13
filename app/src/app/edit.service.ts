@@ -62,10 +62,10 @@ export class EditService {
     });
   }
 
-  toggleCompact(key: PageKey, col: number, i: number) {
+  toggle(key: PageKey, col: number, i: number, flag: 'compact' | 'big') {
     this.change(key, p => {
-      const w = p.columns[col].widgets[i];
-      if (w.compact) delete w.compact; else w.compact = true;
+      const w = p.columns[col].widgets[i] as Widget & { big?: boolean };
+      if (w[flag]) delete w[flag]; else w[flag] = true;
     });
   }
 
