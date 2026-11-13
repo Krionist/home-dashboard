@@ -1009,3 +1009,12 @@ body.tablet .wx-a { font-size: 22px; } body.tablet .wx-a span { font-size: 38px;
 .big-date { margin-top: 10px; font-size: max(14px, 4.5cqw); }
 .big-wx { margin-top: 6px; font-size: max(13px, 3.6cqw); color: var(--muted); }
 .big-wx b { color: var(--fg); font-weight: 500; }
+
+/* /tablet settings pop-up */
+.tset-bg { position: fixed; inset: 0; z-index: 96; display: grid; place-items: center; background: #000a; }
+.tset { width: min(480px, calc(100vw - 32px)); display: flex; flex-direction: column; gap: 14px; font-size: 16px; }
+.tset h3, .tset h4 { margin: 0; } .tset h4 { margin-top: 6px; }
+.tset label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; justify-content: space-between; }
+.tset input[type=range] { width: 100%; accent-color: var(--accent); height: 28px; }
+.tset-hours { display: flex; gap: 16px; }
+.tset input[type=number] { width: 64px; padding: 6px; background: var(--card-solid); color: var(--fg); border: 1px solid var(--line-hi); border-radius: 8px; font: 16px var(--mono); }

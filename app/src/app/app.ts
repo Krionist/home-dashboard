@@ -9,10 +9,11 @@ import { LowBatteryBanner } from './low-battery';
 import { kiosk } from './kiosk';
 import { WeatherAlert } from './weather-alert';
 import { EditService } from './edit.service';
+import { TabletSettings } from './tablet-settings';
 
 @Component({
   selector: 'app-root',
-  imports: [DatePipe, Background, OverdueBanner, LowBatteryBanner, PageComponent, WeatherAlert],
+  imports: [DatePipe, Background, OverdueBanner, LowBatteryBanner, PageComponent, WeatherAlert, TabletSettings],
   template: `
     @if (k?.ringing()) {
       <!-- live MJPEG straight from HA: the nginx /camera cache is minutes stale -->
@@ -39,9 +40,11 @@ import { EditService } from './edit.service';
       <app-page class="tablet" [page]="t" key="tablet" />
       <div class="night-test">
         <button (click)="ed.start()">✏️ Szerkesztés</button>
+        <button (click)="settings.set(true)">⚙️ Beállítások</button>
         <button (click)="k!.test.set(true)">🌙 Éjszakai óra teszt</button>
         @if (t.doorbell) { <button (click)="k!.ring()">🔔 Csengő teszt</button> }
       </div>
+      @if (settings()) { <app-tablet-settings (close)="settings.set(false)" /> }
     } @else if (cfg.config(); as c) {
       <app-overdue [config]="c" />
       <app-low-battery [config]="c" />
@@ -83,6 +86,7 @@ export class App {
   readonly ha = inject(HaService);
   readonly ed = inject(EditService);
   readonly tab = signal(0);
+  readonly settings = signal(false);
   readonly tablet = location.pathname.startsWith('/tablet');
   readonly k = this.tablet ? kiosk(() => this.cfg.config()?.tablet?.brightness, () => this.cfg.config()?.tablet?.doorbell) : undefined;
   readonly doorbellSrc = computed(() => {

@@ -2,6 +2,7 @@ import { Injectable, inject, signal } from '@angular/core';
 import { Config, Page, Widget, isWidget } from './config';
 import { ConfigService } from './config.service';
 import { HaService } from './ha.service';
+import { Brightness } from './kiosk';
 
 export type PageKey = number | 'tablet';
 
@@ -88,6 +89,14 @@ export class EditService {
     const w = JSON.parse(json);
     if (!isWidget(w)) throw new Error('ismeretlen widget type');
     return w;
+  }
+
+  // tablet settings pop-up: live preview straight into the config, save() persists it
+  setBrightness(b: Brightness | undefined) {
+    const c = structuredClone(this.cfg.config()!);
+    if (!c.tablet) return;
+    if (b) c.tablet.brightness = b; else delete c.tablet.brightness;
+    this.cfg.config.set(c);
   }
 
   private change(key: PageKey, fn: (p: Page) => void) {
