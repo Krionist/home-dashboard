@@ -975,3 +975,18 @@ body.tablet .wx-a { font-size: 22px; } body.tablet .wx-a span { font-size: 38px;
 .chk { flex: none; width: 26px; height: 26px; padding: 0; border-radius: 7px; border: 2px solid var(--line-hi); background: none; }
 .row.due.late .chk { border-color: var(--bad); }
 .chk:active { background: var(--ok); border-color: var(--ok); }
+
+/* edit mode: per-widget toolbar, add panel, sticky save bar */
+.wedit { display: flex; gap: 4px; justify-content: flex-end; margin-bottom: -14px; position: relative; z-index: 5; }
+.wedit button { width: 34px; height: 30px; padding: 0; font-size: 15px; }
+.wedit .del { color: var(--bad); border-color: var(--bad); }
+.wbox:has(.wedit) > :not(.wedit) { outline: 1px dashed var(--accent); outline-offset: 4px; border-radius: 14px; }
+.wadd { display: flex; flex-direction: column; gap: 10px; }
+.wadd select, .wadd textarea { width: 100%; background: var(--card-solid); color: var(--fg); border: 1px solid var(--line-hi); border-radius: 8px; padding: 8px; font: 12px var(--mono); }
+.wadd-btns { display: flex; gap: 8px; }
+.wadd-open { border-style: dashed; padding: 14px; }
+.edit-bar {
+  position: fixed; bottom: 18px; left: 50%; translate: -50%; z-index: 95; display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px 10px 20px; border-radius: 14px; background: #1a1d24e6; border: 1px solid var(--accent); backdrop-filter: blur(12px);
+}
+.edit-btn { margin-left: auto; }

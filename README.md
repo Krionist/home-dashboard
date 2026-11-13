@@ -32,6 +32,10 @@ Everything on the page comes from one `config.json`: tabs, columns and widgets. 
 | `temp-chart` | Several temperature sensors overlaid on one 24 h chart, optional humidity bar |
 | `todo-due` | Late and upcoming to-do items (Vikunja), tap to complete |
 
+## Editing
+
+✏️ (nav, or the button under the tablet page) turns on edit mode: move (↑↓←→) or remove (✕) widgets, and add one per column, either a copy of any widget already in the config or raw JSON. Saving PUTs `config.json` to the sidecar, which accepts it only with a token Home Assistant accepts and writes it to the Longhorn PVC (previous version kept as `config.json.bak`). The ConfigMap only seeds the PVC on first start.
+
 ## Tablet (`/tablet`)
 
 `config.json` → `tablet` is a separate page for a wall tablet in Fully Kiosk Browser (enable *JavaScript Interface* and *Keep Screen On*). It sets brightness by `sun.sun`, switches to a dim clock on black overnight (`brightness.nightClock`), and shows the doorbell camera full screen on a ring (`doorbell`). `weatherAlert` pops up storm/hail/downpour/wind warnings from the hourly forecast on both views.

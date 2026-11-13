@@ -1,8 +1,11 @@
 """Reddit listing proxy. Reddit blocks plain clients by TLS fingerprint, so this impersonates Firefox
 and uses the guest-token flow (same trick as Glance's reddit widget). GET /r/<sub> -> [{title, link, date}]
-GET /up?url=http://x.lan/ -> 200/503: server-side status check for sites the browser can't probe (CORP same-origin)"""
+GET /up?url=http://x.lan/ -> 200/503: server-side status check for sites the browser can't probe (CORP same-origin)
+GET/PUT /config.json: the dashboard config on the PVC (seeded from the ConfigMap once); PUT needs a valid HA bearer token"""
 import html
 import json
+import os
+import shutil
 import re
 import threading
 import time
@@ -82,8 +85,68 @@ def is_up(url: str) -> bool:
     return True
 
 
+CONFIG = os.environ.get('CONFIG_PATH', '/data/config.json')
+SEED = os.environ.get('SEED_PATH', '/seed/config.json')
+HA_URL = os.environ.get('HA_URL', '')
+MAX_CONFIG = 1 << 20
+
+
+def check_config(new, old: dict) -> str:
+    """'' if `new` may replace `old`, else why not. haUrl is fixed: changing it would send logins elsewhere."""
+    if not isinstance(new, dict) or not isinstance(new.get('pages'), list):
+        return 'config must be an object with pages'
+    if new.get('haUrl') != old.get('haUrl'):
+        return 'haUrl cannot be changed from the UI'
+    return ''
+
+
+def ha_ok(auth: str) -> bool:
+    if not (HA_URL and auth.startswith('Bearer ')):
+        return False
+    try:
+        urllib.request.urlopen(urllib.request.Request(HA_URL + '/api/', headers={'Authorization': auth}), timeout=5)
+        return True
+    except (urllib.error.HTTPError, OSError):
+        return False
+
+
+def save_config(cfg: dict):
+    tmp = CONFIG + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as f:
+        json.dump(cfg, f, ensure_ascii=False, indent=2)
+    if os.path.exists(CONFIG):
+        shutil.copyfile(CONFIG, CONFIG + '.bak')  # one step of undo, by hand: kubectl exec ... cp config.json.bak config.json
+    os.replace(tmp, CONFIG)
+
+
 class Handler(BaseHTTPRequestHandler):
+    def do_PUT(self):
+        if self.path != '/config.json':
+            return self.reply(404, {'error': 'not found'})
+        if not ha_ok(self.headers.get('Authorization', '')):
+            return self.reply(401, {'error': 'HA login required'})
+        n = int(self.headers.get('Content-Length') or 0)
+        if not 0 < n <= MAX_CONFIG:
+            return self.reply(413, {'error': 'bad size'})
+        try:
+            new = json.loads(self.rfile.read(n))
+            with open(CONFIG, encoding='utf-8') as f:
+                why = check_config(new, json.load(f))
+        except (ValueError, OSError) as e:
+            return self.reply(400, {'error': str(e)})
+        if why:
+            return self.reply(400, {'error': why})
+        with lock:
+            save_config(new)
+        self.reply(200, {'ok': True})
+
     def do_GET(self):
+        if self.path.split('?')[0] == '/config.json':
+            try:
+                with open(CONFIG, 'rb') as f:
+                    return self.reply(200, json.load(f))
+            except (ValueError, OSError) as e:
+                return self.reply(500, {'error': str(e)})
         if self.path.startswith('/up?'):
             url = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query).get('url', [''])[0]
             if not allowed(url):
@@ -108,4 +171,7 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
+    if os.path.exists(SEED) and not os.path.exists(CONFIG):
+        os.makedirs(os.path.dirname(CONFIG), exist_ok=True)
+        shutil.copyfile(SEED, CONFIG)  # first start: the ConfigMap becomes the editable copy
     ThreadingHTTPServer(('127.0.0.1', 8082), Handler).serve_forever()

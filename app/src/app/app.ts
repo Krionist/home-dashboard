@@ -8,6 +8,7 @@ import { OverdueBanner } from './overdue';
 import { LowBatteryBanner } from './low-battery';
 import { kiosk } from './kiosk';
 import { WeatherAlert } from './weather-alert';
+import { EditService } from './edit.service';
 
 @Component({
   selector: 'app-root',
@@ -25,10 +26,19 @@ import { WeatherAlert } from './weather-alert';
     } @else {
     <app-bg />
     @if (cfg.error() || ha.error()) { <p class="err">{{ cfg.error() }} {{ ha.error() }}</p> }
+    @if (ed.on()) {
+      <div class="edit-bar">
+        <span>Szerkesztés</span>
+        @if (ed.error()) { <span class="err">{{ ed.error() }}</span> }
+        <button class="on" [disabled]="ed.busy()" (click)="ed.save()">Mentés</button>
+        <button [disabled]="ed.busy()" (click)="ed.cancel()">Mégse</button>
+      </div>
+    }
     @if (cfg.config()?.weatherAlert; as wa) { <app-weather-alert [entity]="wa.entity" [hours]="wa.hours ?? 6" /> }
     @if (tablet && cfg.config()?.tablet; as t) {
-      <app-page class="tablet" [page]="t" />
+      <app-page class="tablet" [page]="t" key="tablet" />
       <div class="night-test">
+        <button (click)="ed.start()">✏️ Szerkesztés</button>
         <button (click)="k!.test.set(true)">🌙 Éjszakai óra teszt</button>
         @if (t.doorbell) { <button (click)="k!.ring()">🔔 Csengő teszt</button> }
       </div>
@@ -59,9 +69,10 @@ import { WeatherAlert } from './weather-alert';
           }
         </div>
         @if (!ha.connected()) { <span class="err">HA offline</span> }
+        @if (!ed.on()) { <button class="edit-btn" (click)="ed.start()" aria-label="Szerkesztés">✏️</button> }
       </nav>
       <!-- recreated per tab so the cards replay their entrance animation -->
-      @for (p of [c.pages[tab()]]; track p.name) { <app-page [page]="p" /> }
+      @for (p of [c.pages[tab()]]; track p.name) { <app-page [page]="p" [key]="tab()" /> }
     } @else if (!cfg.error()) {
       <div class="boot" aria-label="Betöltés"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" pathLength="100" /></svg></div>
     }
@@ -70,6 +81,7 @@ import { WeatherAlert } from './weather-alert';
 export class App {
   readonly cfg = inject(ConfigService);
   readonly ha = inject(HaService);
+  readonly ed = inject(EditService);
   readonly tab = signal(0);
   readonly tablet = location.pathname.startsWith('/tablet');
   readonly k = this.tablet ? kiosk(() => this.cfg.config()?.tablet?.brightness, () => this.cfg.config()?.tablet?.doorbell) : undefined;

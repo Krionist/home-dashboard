@@ -5,6 +5,8 @@
 #   kubectl -n home-dashboard create configmap home-dashboard-config --from-file=config.json=app/public/config.json \
 #     --dry-run=client -o yaml | kubectl apply -f -
 #   kubectl -n home-dashboard rollout restart deploy/home-dashboard   # subPath mounts don't pick up ConfigMap edits
+# The ConfigMap is only the seed: on first start the sidecar copies it to the Longhorn PVC, and from then on the
+# dashboard's edit mode saves there. To re-seed from the ConfigMap: kubectl exec ... -c sidecar -- rm /data/config.json, then restart.
 #
 # Images are built and pushed to ghcr.io by .github/workflows/images.yml when a v* tag is pushed.
 apiVersion: v1
@@ -20,6 +22,7 @@ metadata:
   labels: { app: home-dashboard }
 spec:
   replicas: 1
+  strategy: { type: Recreate } # RWO volume: the old pod must let go before the new one mounts it
   selector:
     matchLabels: { app: home-dashboard }
   template:
@@ -36,10 +39,6 @@ spec:
               value: http://192.168.1.7:8123
           envFrom:
             - secretRef: { name: home-dashboard-secrets } # WAQI_TOKEN, JELLYFIN_TOKEN, SONARR_API_KEY, RADARR_API_KEY, FIREFLY_TOKEN → nginx templates
-          volumeMounts:
-            - name: config
-              mountPath: /usr/share/nginx/html/config.json
-              subPath: config.json
           readinessProbe:
             httpGet: { path: /, port: http }
             periodSeconds: 10
@@ -50,15 +49,34 @@ spec:
           resources:
             requests: { cpu: 10m, memory: 32Mi }
             limits: { memory: 128Mi }
-        - name: sidecar # reddit JSON + /up checks on 127.0.0.1:8082, reached only via nginx /reddit/
+        - name: sidecar # reddit JSON, /up checks and config.json read/save on 127.0.0.1:8082, reached only via nginx
           image: ghcr.io/krionist/home-dashboard-sidecar:latest
           imagePullPolicy: Always
+          env:
+            - name: HA_URL # PUT /config.json is allowed only with a token HA accepts
+              value: http://192.168.1.7:8123
+          volumeMounts:
+            - { name: data, mountPath: /data }
+            - { name: config, mountPath: /seed, readOnly: true }
           resources:
             requests: { cpu: 10m, memory: 48Mi }
             limits: { memory: 192Mi }
       volumes:
         - name: config
           configMap: { name: home-dashboard-config }
+        - name: data
+          persistentVolumeClaim: { claimName: home-dashboard-data }
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: home-dashboard-data
+  namespace: home-dashboard
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: longhorn
+  resources:
+    requests: { storage: 100Mi }
 ---
 apiVersion: v1
 kind: Service

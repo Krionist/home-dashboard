@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import {
-  Connection, ERR_INVALID_AUTH, HassEntities, callService, createConnection, getAuth, subscribeEntities,
+  Auth, Connection, ERR_INVALID_AUTH, HassEntities, callService, createConnection, getAuth, subscribeEntities,
 } from 'home-assistant-js-websocket';
 
 const TOKENS_KEY = 'hassTokens';
@@ -11,6 +11,7 @@ export class HaService {
   readonly connected = signal(false);
   readonly error = signal('');
   private conn?: Connection;
+  private auth?: Auth;
 
   async connect(hassUrl: string) {
     try {
@@ -20,6 +21,7 @@ export class HaService {
         saveTokens: d => localStorage.setItem(TOKENS_KEY, JSON.stringify(d)),
         loadTokens: async () => JSON.parse(localStorage.getItem(TOKENS_KEY) ?? 'null'),
       });
+      this.auth = auth;
       if (location.search.includes('auth_callback')) history.replaceState(null, '', location.pathname);
       const conn = (this.conn = await createConnection({ auth }));
       conn.addEventListener('ready', () => this.connected.set(true));
@@ -34,6 +36,13 @@ export class HaService {
       }
       this.error.set(`HA: ${e}`);
     }
+  }
+
+  // current access token, refreshed when stale; the sidecar checks it against HA before saving the config
+  async token() {
+    if (!this.auth) throw new Error('nincs HA kapcsolat');
+    if (this.auth.expired) await this.auth.refreshAccessToken();
+    return this.auth.accessToken;
   }
 
   toggle(entity_id: string) {

@@ -6,7 +6,12 @@ server {
   root /usr/share/nginx/html;
 
   location / { try_files $uri /index.html; }
-  location = /config.json { add_header Cache-Control no-store; }
+  # editable config lives on the sidecar's PVC; GET reads it, PUT (HA token checked by the sidecar) saves it
+  location = /config.json {
+    add_header Cache-Control no-store;
+    client_max_body_size 1m;
+    proxy_pass http://127.0.0.1:8082;
+  }
 
   include /etc/nginx/feeds.conf;
 

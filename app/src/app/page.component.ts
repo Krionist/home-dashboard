@@ -1,4 +1,5 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
+import { EditService, PageKey } from './edit.service';
 import { Page } from './config';
 import { BookmarksWidget } from './widgets/bookmarks';
 import { CalendarWidget } from './widgets/calendar';
@@ -34,11 +35,20 @@ import { HAS_ART, WidgetIcon } from './widgets/widget-icon';
     LonghornWidget, MonitorWidget, NetworkWidget, PiholeWidget, PowerWidget, PurifierWidget, RssWidget, SearchWidget, ServersWidget, SparkyWidget, TempChartWidget, TodoDueWidget, TorrentWidget, UpsWidget, WaqiWidget, WidgetIcon],
   template: `
     <div class="grid" [style.--cols]="cols()">
-      @for (col of page().columns; track $index) {
+      @for (col of page().columns; track $index; let ci = $index) {
         <div class="col" [class.main]="col.size === 'full'">
           @for (w of col.widgets; track $index) {
             <!-- wrapper so the corner icon can sit over the widget's first card -->
             <div class="wbox" [class.has-ico]="!HAS_ART.includes(w.type)">
+            @if (ed.on()) {
+              <div class="wedit">
+                <button (click)="ed.move(key(), ci, $index, -1, 0)" aria-label="Fel">↑</button>
+                <button (click)="ed.move(key(), ci, $index, 1, 0)" aria-label="Le">↓</button>
+                <button (click)="ed.move(key(), ci, $index, 0, -1)" aria-label="Balra">←</button>
+                <button (click)="ed.move(key(), ci, $index, 0, 1)" aria-label="Jobbra">→</button>
+                <button class="del" (click)="ed.remove(key(), ci, $index)" aria-label="Törlés">✕</button>
+              </div>
+            }
             @switch (w.type) {
               @case ('clock-weather') { <app-clock-weather [w]="$any(w)" /> }
               @case ('search') { <app-search [w]="$any(w)" /> }
@@ -70,12 +80,45 @@ import { HAS_ART, WidgetIcon } from './widgets/widget-icon';
             @if (!HAS_ART.includes(w.type)) { <app-widget-icon [type]="w.type" /> }
             </div>
           }
+          @if (ed.on()) {
+            @if (adding() === ci) {
+              <div class="card wadd">
+                <select #pick>
+                  <option value="">– meglévő widget –</option>
+                  @for (o of ed.catalog(); track $index) { <option [value]="$index">{{ o.label }}</option> }
+                </select>
+                <textarea #json rows="5" placeholder='vagy új widget JSON-ja, pl. {"type": "waqi", "title": "AQI", "lat": 47.3, "lon": 21.5}'></textarea>
+                @if (addErr()) { <div class="err">{{ addErr() }}</div> }
+                <div class="wadd-btns">
+                  <button (click)="add(ci, pick.value, json.value)">Hozzáad</button>
+                  <button (click)="adding.set(null)">Mégse</button>
+                </div>
+              </div>
+            } @else {
+              <button class="wadd-open" (click)="adding.set(ci); addErr.set('')">＋ Widget</button>
+            }
+          }
         </div>
       }
     </div>`,
 })
 export class PageComponent {
   readonly page = input.required<Page>();
+  readonly key = input.required<PageKey>(); // which page of the config this is, for edits
+  readonly ed = inject(EditService);
+  readonly adding = signal<number | null>(null);
+  readonly addErr = signal('');
+
+  add(col: number, pick: string, json: string) {
+    try {
+      const w = json.trim() ? this.ed.parse(json) : this.ed.catalog()[Number(pick)]?.w;
+      if (!pick && !json.trim()) throw new Error('válassz widgetet vagy írj JSON-t');
+      this.ed.add(this.key(), col, w!);
+      this.adding.set(null);
+    } catch (e) {
+      this.addErr.set(e instanceof Error ? e.message : String(e));
+    }
+  }
   readonly HAS_ART = HAS_ART;
   readonly cols = computed(() => this.page().columns.map(c => (c.size === 'small' ? '300px' : 'minmax(0,1fr)')).join(' '));
 }

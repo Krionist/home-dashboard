@@ -43,6 +43,8 @@ export interface Config { haUrl: string; pages: Page[]; weatherAlert?: { entity:
 
 const TYPES = ['clock-weather', 'search', 'bookmarks', 'monitor', 'iframe', 'rss', 'ha-entities', 'calendar', 'longhorn', 'linkwarden', 'waqi', 'camera', 'climate', 'servers', 'pihole', 'torrent', 'purifier', 'ups', 'power', 'ha-button', 'devices', 'network', 'sparky', 'forecast', 'temp-chart', 'todo-due'];
 
+export const isWidget = (w: unknown): w is Widget => TYPES.includes((w as Widget)?.type);
+
 // ponytail: shallow validation (type names only); add per-widget checks if config typos keep biting
 export function parseConfig(raw: unknown): Config {
   const c = raw as Config;

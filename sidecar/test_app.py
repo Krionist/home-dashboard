@@ -1,4 +1,4 @@
-from app import allowed, to_items
+from app import allowed, check_config, to_items
 
 listing = {'data': {'children': [
     {'data': {'title': 'A &amp; B', 'permalink': '/r/x/comments/1/a/', 'created': 1700000000.0}},
@@ -13,4 +13,8 @@ assert to_items(listing) == [
 ]
 assert allowed('http://trek.lan/') and allowed('https://a.b.lan:8443/x')
 assert not allowed('http://example.com/') and not allowed('file:///etc/passwd') and not allowed('http://lan/')
+old = {'haUrl': 'http://ha:8123', 'pages': []}
+assert check_config({'haUrl': 'http://ha:8123', 'pages': [{'name': 'x', 'columns': []}]}, old) == ''
+assert check_config({'haUrl': 'http://evil:8123', 'pages': []}, old)
+assert check_config({'haUrl': 'http://ha:8123'}, old) and check_config([], old)
 print('ok')
