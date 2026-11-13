@@ -38,7 +38,7 @@ Everything on the page comes from one `config.json`: tabs, columns and widgets. 
 
 ## Tablet (`/tablet`)
 
-`config.json` → `tablet` is a separate page for a wall tablet in Fully Kiosk Browser (enable *JavaScript Interface* and *Keep Screen On*). It sets brightness by `sun.sun`, switches to a dim clock on black overnight (`brightness.nightClock`), and shows the doorbell camera full screen on a ring (`doorbell`). `weatherAlert` pops up storm/hail/downpour/wind warnings from the hourly forecast on both views.
+`config.json` → `tablet` is a separate page for a wall tablet in Fully Kiosk Browser (enable *JavaScript Interface* and *Keep Screen On*) or FreeKiosk (set `brightness.freekiosk: {}` and turn on its REST API with remote control; brightness and wake go through `http://127.0.0.1:8080`). It sets brightness by `sun.sun`, switches to a dim clock on black overnight (`brightness.nightClock`), and shows the doorbell camera full screen on a ring (`doorbell`). `weatherAlert` pops up storm/hail/downpour/wind warnings from the hourly forecast on both views.
 
 The background is an animated SVG scene that follows the real weather from HA: season, day/dusk/night, clouds, rain, snow, fog, lightning and wind. To preview a combination, add `?scene=winter,night,snowy` to the URL.
 

@@ -1008,7 +1008,8 @@
     "name": "Tablet",
     "brightness": {
       "day": 200,
-      "night": 20
+      "night": 20,
+      "freekiosk": {}
     },
     "doorbell": {
       "event": "event.ac_doorbell_doorbell_message",
