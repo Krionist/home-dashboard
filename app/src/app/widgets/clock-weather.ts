@@ -8,6 +8,10 @@ const LABEL: Record<string, string> = {
   partlycloudy: 'Részben felhős', pouring: 'Felhőszakadás', rainy: 'Eső', snowy: 'Havazás', 'snowy-rainy': 'Havas eső', sunny: 'Napos',
   windy: 'Szeles', 'windy-variant': 'Szeles, felhős', exceptional: 'Rendkívüli',
 };
+const EMOJI: Record<string, string> = {
+  'clear-night': '🌙', cloudy: '☁️', fog: '🌫️', hail: '🌨️', lightning: '🌩️', 'lightning-rainy': '⛈️', partlycloudy: '⛅',
+  pouring: '🌧️', rainy: '🌦️', snowy: '❄️', 'snowy-rainy': '🌨️', sunny: '☀️', windy: '💨', 'windy-variant': '💨', exceptional: '⚠️',
+};
 // which drawn layers make up each condition
 const has = (s: string, ...k: string[]) => k.includes(s);
 
@@ -20,6 +24,9 @@ const has = (s: string, ...k: string[]) => k.includes(s);
         <!-- wall view: just the time, as large as the panel allows -->
         <div class="big-time">{{ now() | date: 'HH' }}<span class="colon">:</span>{{ now() | date: 'mm' }}</div>
         <div class="big-date muted">{{ huDate(now()) }}</div>
+        @if (weather(); as e) {
+          <div class="big-wx">{{ EMOJI[e.state] ?? '' }} <b>{{ e.attributes['temperature'] }}°</b> · {{ label(e.state) }} · 💧 {{ e.attributes['humidity'] }}%</div>
+        }
       } @else {
       <div class="clockface">
         <svg viewBox="0 0 64 64" class="analog">
@@ -79,6 +86,7 @@ export class ClockWeatherWidget {
   readonly now = signal(new Date());
   readonly weather = computed(() => this.ha.entities()[this.w().entity]);
   readonly label = (s: string) => LABEL[s] ?? s;
+  readonly EMOJI = EMOJI;
   readonly huDate = (d: Date) => d.toLocaleDateString('hu-HU', { weekday: 'long', month: 'long', day: 'numeric' });
   readonly L = computed(() => {
     const s = this.weather()?.state ?? '';
