@@ -5,6 +5,9 @@ import { HaService } from '../ha.service';
 type History = Record<string, { s: string; lu: number }[]>; // lu: unix seconds
 const COLORS = ['#f0a640', '#4aa8ff', '#4fd18b', '#c77dff', '#ff5a5f'];
 const VW = 300, VH = 110, HOURS = 24;
+// compact legend: an icon instead of the name, guessed from the entity id / name
+const ICONS: [RegExp, string][] = [[/outside|outdoor|kint|kül|szonda|probe/i, '🌳'], [/garage|garázs/i, '🚗'], [/server|szerver/i, '🖥️'], [/indoor|benti|szoba|nappali|living/i, '🏠']];
+const iconFor = (s: string) => ICONS.find(([re]) => re.test(s))?.[1] ?? '🌡️';
 
 // several sensors' last 24 h on one shared scale, current values underneath
 @Component({
@@ -19,9 +22,9 @@ const VW = 300, VH = 110, HOURS = 24;
         </svg>
         <div class="tc-axis muted"><span>{{ c.max }}°</span><span>{{ c.min }}°</span></div>
       }
-      <div class="tc-legend">
+      <div class="tc-legend" [class.mini]="w().compact">
         @for (n of now(); track n.id) {
-          <div [style.--c]="n.color" [title]="n.name"><i></i>@if (!w().compact) { <span class="muted">{{ n.name }}</span> }<b class="val">{{ n.value }}</b></div>
+          <div [style.--c]="n.color" [title]="n.name"><i></i>@if (w().compact) { <span class="tc-ico">{{ n.icon }}</span> } @else { <span class="muted">{{ n.name }}</span> }<b class="val">{{ n.value }}</b></div>
         }
       </div>
       @if (humidity(); as h) {
@@ -49,7 +52,7 @@ export class TempChartWidget {
     return this.w().entities.map((id, i) => {
       const s = e[id], n = Number(s?.state);
       return {
-        id, color: COLORS[i % COLORS.length],
+        id, color: COLORS[i % COLORS.length], icon: iconFor(id + ' ' + (s?.attributes['friendly_name'] ?? '')),
         name: (s?.attributes['friendly_name'] as string | undefined)?.replace(/\s*(szonda )?(hőmérséklete?|temperature)$/i, '') ?? id,
         value: Number.isFinite(n) ? `${n.toLocaleString('hu-HU', { maximumFractionDigits: 1 })} ${s.attributes['unit_of_measurement'] ?? ''}` : '–',
       };

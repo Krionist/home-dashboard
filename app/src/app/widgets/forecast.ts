@@ -19,7 +19,7 @@ const W_ = 300, H = 110, PAD = 18; // daily chart viewBox
       @if (w().mode === 'rain') {
         @if (rain(); as r) {
           @if (!w().compact) { <div class="rain-sum">{{ r.next }}</div> }
-          <div class="rain-bars">
+          <div class="rain-bars" [class.mini]="w().compact">
             @for (b of r.bars; track b.t) {
               <div [title]="b.mm + ' mm · ' + b.p + '%'">
                 <small class="val">{{ b.mm ? b.mm : '' }}</small>

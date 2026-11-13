@@ -996,3 +996,9 @@ body.tablet .wx-a { font-size: 22px; } body.tablet .wx-a span { font-size: 38px;
 .aqi-mini { display: flex; align-items: center; gap: 12px; }
 .aqi-mini .aqi-scale { flex: 1; margin: 0; }
 .aqi-mini > .val { font-size: 18px; }
+.rain-bars.mini i { height: 34px; }
+.tc-legend.mini { margin-top: 8px; }
+.tc-legend.mini > div { flex-direction: row; gap: 6px; }
+.tc-legend.mini i { display: none; }
+.tc-legend.mini .tc-ico { font-size: 16px; }
+.tc-legend.mini b { font-size: 15px; }
