@@ -25,7 +25,7 @@ export const pmClass = (pm: number) => (pm <= 12 ? 'ok' : pm <= 35 ? 'warn' : 'b
         <rect class="body" x="104" y="18" width="52" height="84" rx="14" />
         <rect class="grille" x="112" y="78" width="36" height="16" rx="4" />
         <g class="rotor" [style.animation-duration.s]="v().spin">
-          <circle cx="130" cy="48" r="17" class="ring" />
+          <circle cx="130" cy="48" r="17" class="pu-ring" />
           @for (k of [0, 1, 2, 3, 4]; track k) { <path d="M130 48q4 -10 0 -15" [attr.transform]="'rotate(' + k * 72 + ' 130 48)'" /> }
         </g>
         <circle cx="130" cy="48" r="3" class="hub" />

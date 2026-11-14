@@ -677,8 +677,8 @@ button:hover .nav-ico.services .gear { transform: rotate(60deg); }
 .pu-scene .body { fill: #15171b; stroke: var(--line-hi); stroke-width: 1.4; }
 .pu-scene .grille { fill: none; stroke: #ffffff22; stroke-dasharray: 2 3; }
 .pu-scene .rotor { transform-origin: 130px 48px; animation: spin 1.2s linear infinite; }
-.pu-scene .rotor path, .pu-scene .ring { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; }
-.pu-scene .ring { stroke-opacity: .35; }
+.pu-scene .rotor path, .pu-scene .pu-ring { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; }
+.pu-scene .pu-ring { stroke-opacity: .35; }
 .pu-scene .hub { fill: var(--accent); }
 .pu-scene .dust { transform-box: fill-box; transform-origin: center; opacity: 0; animation: suck 3s ease-in infinite; }
 .pu-scene .air { fill: none; stroke: var(--ok); stroke-width: 1.4; stroke-linecap: round; opacity: 0; animation: rise-air 1.8s ease-out infinite; }
@@ -862,7 +862,7 @@ button:hover .nav-ico.services .gear { transform: rotate(60deg); }
 .i-servers .led { fill: var(--ok); stroke: none; animation: breathe-o 1.2s ease-in-out infinite; } .i-servers .l2 { animation-delay: -.6s; }
 .i-pihole .drop { fill: currentColor; stroke: none; animation: ico-drip 2s ease-in infinite; }
 .i-torrent .arrow { animation: ico-bob 1.6s ease-in-out infinite; }
-.i-purifier .fan { transform-origin: 16px 14px; animation: spin 2.4s linear infinite; }
+.i-purifier .fan { animation: spin 2.4s linear infinite; }
 .i-k8s .wheel { animation: spin 8s linear infinite; }
 .i-jellyfin .play { fill: currentColor; stroke: none; animation: breathe-o 1.6s ease-in-out infinite; }
 .i-lubelogger .tyre { animation: breathe-o 1.4s ease-in-out infinite; }
