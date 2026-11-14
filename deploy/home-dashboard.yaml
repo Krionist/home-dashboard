@@ -37,6 +37,8 @@ spec:
           env:
             - name: HA_UPSTREAM # camera snapshots are proxied (and cached) through nginx
               value: http://192.168.1.7:8123
+            - name: K8S_TOKEN # read-only API token for the k8s widget (/k8s/* in nginx)
+              valueFrom: { secretKeyRef: { name: home-dashboard-k8s-token, key: token } }
           envFrom:
             - secretRef: { name: home-dashboard-secrets } # WAQI_TOKEN, JELLYFIN_TOKEN, SONARR_API_KEY, RADARR_API_KEY, FIREFLY_TOKEN → nginx templates
           readinessProbe:
@@ -66,6 +68,37 @@ spec:
           configMap: { name: home-dashboard-config }
         - name: data
           persistentVolumeClaim: { claimName: home-dashboard-data }
+---
+# k8s widget: list nodes, pods and node metrics, nothing else
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: home-dashboard-reader
+  namespace: home-dashboard
+automountServiceAccountToken: false
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/service-account-token # long-lived token, filled in by the control plane
+metadata:
+  name: home-dashboard-k8s-token
+  namespace: home-dashboard
+  annotations: { kubernetes.io/service-account.name: home-dashboard-reader }
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: home-dashboard-reader
+rules:
+  - { apiGroups: [""], resources: [nodes, pods], verbs: [list] }
+  - { apiGroups: [metrics.k8s.io], resources: [nodes], verbs: [list] }
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: home-dashboard-reader
+roleRef: { apiGroup: rbac.authorization.k8s.io, kind: ClusterRole, name: home-dashboard-reader }
+subjects: [{ kind: ServiceAccount, name: home-dashboard-reader, namespace: home-dashboard }]
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

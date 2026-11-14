@@ -1,6 +1,6 @@
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { EditService, PageKey } from './edit.service';
-import { Page } from './config';
+import { Page, Widget } from './config';
 import { BookmarksWidget } from './widgets/bookmarks';
 import { CalendarWidget } from './widgets/calendar';
 import { CameraWidget } from './widgets/camera';
@@ -13,8 +13,11 @@ import { DevicesWidget } from './widgets/devices';
 import { HaButtonWidget } from './widgets/ha-button';
 import { HaEntitiesWidget } from './widgets/ha-entities';
 import { IframeWidget } from './widgets/iframe';
+import { JellyfinWidget } from './widgets/jellyfin';
+import { K8sWidget } from './widgets/k8s';
 import { LinkwardenWidget } from './widgets/linkwarden';
 import { LonghornWidget } from './widgets/longhorn';
+import { LubeloggerWidget } from './widgets/lubelogger';
 import { MonitorWidget } from './widgets/monitor';
 import { NetworkWidget } from './widgets/network';
 import { PiholeWidget } from './widgets/pihole';
@@ -31,15 +34,15 @@ import { HAS_ART, WidgetIcon } from './widgets/widget-icon';
 
 @Component({
   selector: 'app-page',
-  imports: [BookmarksWidget, CalendarWidget, CameraWidget, ClimateWidget, ClockWeatherWidget, DevicesWidget, ForecastWidget, HaButtonWidget, HaEntitiesWidget, IframeWidget, LinkwardenWidget,
-    LonghornWidget, MonitorWidget, NetworkWidget, PiholeWidget, PowerWidget, PurifierWidget, RssWidget, SearchWidget, ServersWidget, SparkyWidget, TempChartWidget, TodoDueWidget, TorrentWidget, UpsWidget, WaqiWidget, WidgetIcon],
+  imports: [BookmarksWidget, CalendarWidget, CameraWidget, ClimateWidget, ClockWeatherWidget, DevicesWidget, ForecastWidget, HaButtonWidget, HaEntitiesWidget, IframeWidget, JellyfinWidget, K8sWidget, LinkwardenWidget,
+    LonghornWidget, LubeloggerWidget, MonitorWidget, NetworkWidget, PiholeWidget, PowerWidget, PurifierWidget, RssWidget, SearchWidget, ServersWidget, SparkyWidget, TempChartWidget, TodoDueWidget, TorrentWidget, UpsWidget, WaqiWidget, WidgetIcon],
   template: `
     <div class="grid" [style.--cols]="cols()">
       @for (col of page().columns; track $index; let ci = $index) {
         <div class="col" [class.main]="col.size === 'full'">
           @for (w of col.widgets; track $index) {
             <!-- wrapper so the corner icon can sit over the widget's first card -->
-            <div class="wbox" [class.has-ico]="!HAS_ART.includes(w.type)">
+            <div class="wbox" [class.has-ico]="!HAS_ART.includes(w.type)" [class.linked]="w.url && !ed.on()" (click)="open(w, $event)">
             @if (ed.on()) {
               <div class="wedit">
                 <button (click)="ed.move(key(), ci, $index, -1, 0)" aria-label="Fel">↑</button>
@@ -81,6 +84,9 @@ import { HAS_ART, WidgetIcon } from './widgets/widget-icon';
               @case ('temp-chart') { <app-temp-chart [w]="$any(w)" /> }
               @case ('todo-due') { <app-todo-due [w]="$any(w)" /> }
               @case ('sparky') { <app-sparky [w]="$any(w)" /> }
+              @case ('k8s') { <app-k8s [w]="$any(w)" /> }
+              @case ('jellyfin') { <app-jellyfin [w]="$any(w)" /> }
+              @case ('lubelogger') { <app-lubelogger [w]="$any(w)" /> }
               @case ('network') { <app-network [w]="$any(w)" /> }
             }
             @if (!HAS_ART.includes(w.type)) { <app-widget-icon [type]="w.type" /> }
@@ -113,6 +119,11 @@ export class PageComponent {
   readonly key = input.required<PageKey>(); // which page of the config this is, for edits
   readonly ed = inject(EditService);
   readonly adding = signal<number | null>(null);
+  // the widget's own buttons/links keep working; only clicks elsewhere on it open w.url
+  open(w: Widget, e: MouseEvent) {
+    if (w.url && !this.ed.on() && !(e.target as Element).closest('a, button, input, select, textarea, label, svg.dev'))
+      window.open(w.url, '_blank', 'noopener');
+  }
   readonly addErr = signal('');
 
   add(col: number, pick: string, json: string) {

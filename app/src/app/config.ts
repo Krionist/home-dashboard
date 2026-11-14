@@ -5,8 +5,8 @@ export interface Feed { name: string; url: string; kind?: 'json' | 'jellyfin'; t
 // a calendar entity, or a set of todo lists (items with a due date show up as events)
 export type CalSource = { id: string; label: string; color?: string } | { kind: 'todo'; ids: string[]; label: string; color?: string; url?: string } // url: where the overdue banner links to;
 
-// compact: slimmer variant (fewer labels) where the widget has one
-export type Widget = { compact?: boolean } & (
+// compact: slimmer variant (fewer labels) where the widget has one; url: tapping the widget (outside its controls) opens it
+export type Widget = { compact?: boolean; url?: string } & (
   | { type: 'clock-weather'; entity: string; big?: boolean } // big: time only, filling the card
   | { type: 'search'; bangs: Bang[] }
   | { type: 'bookmarks'; title?: string; groups: { title: string; links: Link[] }[] }
@@ -31,6 +31,9 @@ export type Widget = { compact?: boolean } & (
   | { type: 'temp-chart'; title: string; entities: string[]; humidity?: string } // overlaid 24 h history, current values below, optional humidity bar
   | { type: 'todo-due'; title: string; entities: string[]; days?: number; limit?: number } // late + due within `days` (default 7), tap to complete
   | { type: 'sparky'; title: string } // SparkyFitness daily calories via the /sparky proxy
+  | { type: 'k8s'; title: string } // nodes + pod health from the Kubernetes API via the /k8s proxy
+  | { type: 'jellyfin'; title: string } // now playing, from /jellyfin/Sessions
+  | { type: 'lubelogger'; title: string; limit?: number } // reminders per car (limit per car, default 4) via the /lubelogger proxy
   | { type: 'network'; title: string; nodes: { name: string; kind: 'router' | 'server' | 'nas' | 'ups' | 'nvr' | 'camera' | 'ha'; entity?: string; url?: string; proxmox?: string; parent?: string; powers?: string[] }[] }
   // status from entity, else HTTP check of url; proxmox = PVE node name (load bars + click for guests); parent = data link target (by name); powers = nodes it feeds
   | { type: 'servers'; title: string; servers: { name: string; status: string; cpu: string; mem: string; drives?: string[]; extra?: string[] }[] });
@@ -42,7 +45,7 @@ export interface Page { name: string; columns: Column[] }
 // weatherAlert: pop-up for storms/hail/downpour/strong wind in the next `hours` of the weather entity's hourly forecast
 export interface Config { haUrl: string; pages: Page[]; weatherAlert?: { entity: string; hours?: number }; tablet?: Page & { brightness?: Brightness; doorbell?: Doorbell } }
 
-const TYPES = ['clock-weather', 'search', 'bookmarks', 'monitor', 'iframe', 'rss', 'ha-entities', 'calendar', 'longhorn', 'linkwarden', 'waqi', 'camera', 'climate', 'servers', 'pihole', 'torrent', 'purifier', 'ups', 'power', 'ha-button', 'devices', 'network', 'sparky', 'forecast', 'temp-chart', 'todo-due'];
+const TYPES = ['clock-weather', 'search', 'bookmarks', 'monitor', 'iframe', 'rss', 'ha-entities', 'calendar', 'longhorn', 'linkwarden', 'waqi', 'camera', 'climate', 'servers', 'pihole', 'torrent', 'purifier', 'ups', 'power', 'ha-button', 'devices', 'network', 'sparky', 'k8s', 'jellyfin', 'lubelogger', 'forecast', 'temp-chart', 'todo-due'];
 
 export const isWidget = (w: unknown): w is Widget => TYPES.includes((w as Widget)?.type);
 

@@ -26,6 +26,9 @@ export const HAS_ART = ['rss', 'camera', 'calendar', 'search', 'clock-weather', 
         @case ('power') { <path d="M11 4v6M21 4v6" /><path d="M8 10h16v5a8 8 0 0 1-16 0z" /><path class="cord" d="M16 23v5" /> }
         @case ('devices') { <rect x="9" y="3" width="14" height="26" rx="3" /><path d="M14 6h4" /><rect class="lvl" x="12" y="10" width="8" height="15" rx="1" /> }
         @case ('network') { <circle class="n n0" cx="16" cy="6" r="3" /><circle class="n n1" cx="7" cy="25" r="3" /><circle class="n n2" cx="25" cy="25" r="3" /><path d="M14.5 8.5l-6 14M17.5 8.5l6 14M10 25h12" /> }
+        @case ('k8s') { <g class="wheel"><circle cx="16" cy="16" r="9" /><circle cx="16" cy="16" r="2.5" /><path d="M16 13.5V4M18.4 14.6l7.4-5.9M18.4 17.4l7.4 5.9M16 18.5V28M13.6 17.4l-7.4 5.9M13.6 14.6L6.2 8.7" /></g> }
+        @case ('jellyfin') { <rect x="4" y="7" width="24" height="16" rx="3" /><path class="play" d="M14 11.5v7l6-3.5z" /><path d="M11 27h10" /> }
+        @case ('lubelogger') { <path d="M5 20l2.5-6.5A3 3 0 0 1 10.3 11.5h11.4a3 3 0 0 1 2.8 2L27 20v4H5z" /><circle class="tyre" cx="10" cy="24" r="2.5" /><circle class="tyre" cx="22" cy="24" r="2.5" /><path d="M9 16h14" /> }
         @default { <circle cx="16" cy="16" r="10" /><path d="M16 11v5l3 3" /> }
       }
     </svg>`,

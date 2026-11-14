@@ -39,6 +39,7 @@ button:focus-visible, .search:focus-visible { outline: 2px solid var(--accent); 
 /* widget hosts that render several cards (bookmarks) */
 .col > *, .wbox > * { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
 .wbox { position: relative; }
+.wbox.linked { cursor: pointer; }
 .card {
   position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px;
   box-shadow: inset 0 1px 0 #ffffff0d, 0 10px 30px -12px #000c; backdrop-filter: blur(12px);
@@ -861,7 +862,10 @@ button:hover .nav-ico.services .gear { transform: rotate(60deg); }
 .i-servers .led { fill: var(--ok); stroke: none; animation: breathe-o 1.2s ease-in-out infinite; } .i-servers .l2 { animation-delay: -.6s; }
 .i-pihole .drop { fill: currentColor; stroke: none; animation: ico-drip 2s ease-in infinite; }
 .i-torrent .arrow { animation: ico-bob 1.6s ease-in-out infinite; }
-.i-purifier .fan { animation: spin 2.4s linear infinite; }
+.i-purifier .fan { transform-origin: 16px 14px; animation: spin 2.4s linear infinite; }
+.i-k8s .wheel { animation: spin 8s linear infinite; }
+.i-jellyfin .play { fill: currentColor; stroke: none; animation: breathe-o 1.6s ease-in-out infinite; }
+.i-lubelogger .tyre { animation: breathe-o 1.4s ease-in-out infinite; }
 .i-ups .bolt { fill: currentColor; stroke: none; animation: breathe-o 1.4s ease-in-out infinite; }
 .i-power .cord { animation: breathe-o 1s ease-in-out infinite; }
 .i-devices .lvl { fill: color-mix(in srgb, var(--ok) 60%, transparent); stroke: none; animation: ico-rise 3s ease-in-out infinite alternate; transform-origin: 50% 100%; }
@@ -1018,3 +1022,27 @@ body.tablet .wx-a { font-size: 22px; } body.tablet .wx-a span { font-size: 38px;
 .tset input[type=range] { width: 100%; accent-color: var(--accent); height: 28px; }
 .tset-hours { display: flex; gap: 16px; }
 .tset input[type=number] { width: 64px; padding: 6px; background: var(--card-solid); color: var(--fg); border: 1px solid var(--line-hi); border-radius: 8px; font: 16px var(--mono); }
+
+/* kubernetes */
+.k8-node { display: grid; grid-template-columns: 28px 1fr auto auto; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+.k8-node > span:first-of-type { display: flex; flex-direction: column; }
+.k8-node.down b { color: var(--bad); }
+.k8-m { display: flex; align-items: center; gap: 6px; } .k8-m .meter { width: 44px; } .k8-m .val { width: 3.5ch; text-align: right; }
+.helm { width: 28px; height: 28px; fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; transform-origin: center; animation: spin 20s linear infinite; }
+.k8-node.down .helm { stroke: var(--bad); animation: none; }
+.k8-sum { margin-top: 10px; }
+.k8-bad { display: flex; justify-content: space-between; gap: 8px; padding: 4px 0 0; font-size: 12px; }
+.k8-bad span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* jellyfin now playing */
+.jf-row { display: flex; gap: 12px; padding: 6px 0; }
+.jf-row img { flex: none; width: 52px; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 6px; background: #000; border: 1px solid var(--line); }
+.jf-row > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.jf-row b, .jf-row small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.jf-prog { width: 100%; margin-top: 6px; }
+
+/* lubelogger */
+.ll-car { display: flex; justify-content: space-between; align-items: baseline; margin: 4px 0 6px; }
+.ll-car ~ .ll-car { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); }
+.ll-rem { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 3px 0; }
+.ll-rem small { white-space: nowrap; }

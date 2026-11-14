@@ -55,6 +55,25 @@ server {
     proxy_set_header x-api-key "${SPARKY_API_KEY}";
     proxy_pass http://sparkyfitness-server.sparky.svc.cluster.local:3010/;
   }
+  location /lubelogger/ {
+    limit_except GET { deny all; }  # LubeLogger runs with auth off: read-only from here
+    proxy_pass http://lubelogger-service.lubelogger.svc.cluster.local:8080/;
+  }
+  # Kubernetes API, read-only ServiceAccount (deploy/home-dashboard.yaml); only these three lists are reachable
+  location = /k8s/nodes {
+    proxy_set_header Authorization "Bearer ${K8S_TOKEN}";
+    proxy_pass https://kubernetes.default.svc.cluster.local/api/v1/nodes;
+  }
+  location = /k8s/node-metrics {
+    proxy_set_header Authorization "Bearer ${K8S_TOKEN}";
+    proxy_pass https://kubernetes.default.svc.cluster.local/apis/metrics.k8s.io/v1beta1/nodes;
+  }
+  location = /k8s/pods {
+    set $args "includeObject=None";  # kubectl-style table: ~30 kB instead of ~1.5 MB of pod specs
+    proxy_set_header Accept "application/json;as=Table;v=v1;g=meta.k8s.io";
+    proxy_set_header Authorization "Bearer ${K8S_TOKEN}";
+    proxy_pass https://kubernetes.default.svc.cluster.local/api/v1/pods;
+  }
   location /waqi/ {
     set $args "token=${WAQI_TOKEN}";
     proxy_ssl_server_name on;

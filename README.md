@@ -31,6 +31,11 @@ Everything on the page comes from one `config.json`: tabs, columns and widgets. 
 | `forecast` | Hourly + daily forecast chart; `mode: rain` shows the next 24 h of precipitation |
 | `temp-chart` | Several temperature sensors overlaid on one 24 h chart, optional humidity bar |
 | `todo-due` | Late and upcoming to-do items (Vikunja), tap to complete |
+| `k8s` | Kubernetes nodes (CPU, RAM, pod count) and unhealthy pods, via a read-only ServiceAccount |
+| `jellyfin` | What is playing on Jellyfin right now, with progress |
+| `lubelogger` | LubeLogger reminders per car, most urgent first, and the odometer |
+
+Any widget can take `"url"`: tapping it outside its own buttons opens that page.
 
 ## Editing
 

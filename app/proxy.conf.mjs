@@ -52,6 +52,10 @@ export default {
     pathRewrite: { '^/sparky': '' },
     headers: { 'x-api-key': process.env.SPARKY_API_KEY ?? '' },
   },
+  '/lubelogger': { target: 'http://lublogger.lan', changeOrigin: true, pathRewrite: { '^/lubelogger': '' } },
+  // k8s: run `kubectl proxy` (port 8001); it adds your kubeconfig credentials
+  ...Object.fromEntries(Object.entries({ nodes: '/api/v1/nodes', 'node-metrics': '/apis/metrics.k8s.io/v1beta1/nodes', pods: '/api/v1/pods?includeObject=None' })
+    .map(([k, path]) => [`/k8s/${k}`, { target: 'http://127.0.0.1:8001', pathRewrite: () => path, headers: k === 'pods' ? { Accept: 'application/json;as=Table;v=v1;g=meta.k8s.io' } : {} }])),
   '/waqi': {
     target: 'https://api.waqi.info',
     changeOrigin: true,
