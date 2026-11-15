@@ -1046,3 +1046,10 @@ body.tablet .wx-a { font-size: 22px; } body.tablet .wx-a span { font-size: 38px;
 .ll-car ~ .ll-car { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); }
 .ll-rem { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 3px 0; }
 .ll-rem small { white-space: nowrap; }
+
+/* /tablet eco: nothing moves or blurs, so the GPU idles between updates */
+body.eco *, body.eco *::before, body.eco *::after { animation: none !important; transition: none !important; backdrop-filter: none !important; filter: none !important; box-shadow: none !important; text-shadow: none !important; }
+body.eco::before { display: none; }
+body.eco .card { background: var(--card-solid); }
+.tset .tset-eco { justify-content: flex-start; }
+.tset-eco small { color: var(--muted); }

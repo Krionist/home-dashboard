@@ -23,6 +23,7 @@ const DEF: Required<Pick<Brightness, 'day' | 'night' | 'nightClock'>> = { day: 2
         </div>
         <label>Fényerő <b>{{ pct(nc().level) }}%</b>
           <input type="range" min="1" max="100" [value]="pct(nc().level)" (input)="setNc({ level: raw($event) })" /></label>
+        <label class="tset-eco"><input type="checkbox" [checked]="!!b().eco" (change)="set({ eco: checked($event) })" /> 🔋 Eco mód <small>(nincs animáció, blur, háttér)</small></label>
         @if (ed.error()) { <div class="err">{{ ed.error() }}</div> }
         <div class="wadd-btns">
           <button class="on" [disabled]="ed.busy()" (click)="save()">Mentés</button>
@@ -42,6 +43,7 @@ export class TabletSettings {
   // config is 0-255 (Fully's scale), the sliders are %
   pct = (v: number) => Math.max(1, Math.round((v / 255) * 100));
   raw = (e: Event) => Math.round((Number((e.target as HTMLInputElement).value) / 100) * 255);
+  checked = (e: Event) => (e.target as HTMLInputElement).checked;
   hour = (e: Event) => Math.min(23, Math.max(0, Math.trunc(Number((e.target as HTMLInputElement).value)) || 0));
 
   set(p: Partial<Brightness>) { this.ed.setBrightness({ ...this.b(), ...p }); }

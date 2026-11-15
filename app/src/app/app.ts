@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ConfigService } from './config.service';
 import { HaService } from './ha.service';
 import { Background } from './background';
@@ -25,7 +25,7 @@ import { TabletSettings } from './tablet-settings';
       <!-- AMOLED: drift a few px every minute against burn-in -->
       <div class="night-clock" (click)="k!.test.set(false)" [style.translate]="drift(k!.now())">{{ k!.now() | date: 'HH:mm' }}</div>
     } @else {
-    <app-bg />
+    @if (!eco()) { <app-bg /> }
     @if (cfg.error() || ha.error()) { <p class="err">{{ cfg.error() }} {{ ha.error() }}</p> }
     @if (ed.on()) {
       <div class="edit-bar">
@@ -94,12 +94,14 @@ export class App {
     const pic = cam ? (this.ha.entities()[cam]?.attributes['entity_picture'] as string | undefined) : undefined;
     return pic ? c!.haUrl + pic.replace('/api/camera_proxy/', '/api/camera_proxy_stream/') : '';
   });
+  readonly eco = computed(() => this.tablet && !!this.cfg.config()?.tablet?.brightness?.eco);
   drift(d: Date) { const m = d.getHours() * 60 + d.getMinutes(); return `${(m * 37) % 61 - 30}px ${(m * 53) % 41 - 20}px`; }
   readonly navIcon = (name: string) => (/home|főoldal/i.test(name) ? 'home' : /servic|szolg/i.test(name) ? 'services' : 'grid');
 
   constructor() {
     if (this.tablet) {
       document.body.classList.add('tablet');
+      effect(() => document.body.classList.toggle('eco', this.eco()));
     }
     this.cfg.load().then(() => {
       const c = this.cfg.config();

@@ -5,8 +5,9 @@ import { HaService } from './ha.service';
 declare const fully: { setScreenBrightness(v: number): void; turnScreenOn(): void; getScreenBrightness(): number } | undefined;
 
 // 0-255, Fully's scale; nightClock: black screen with only a clock between from..to (hours)
+// eco: skip the animated background, blur and animations so the tablet charges faster than it renders
 // freekiosk: FreeKiosk has no JS bridge, so its own REST API is called instead (Settings → Advanced: REST API + remote control on)
-export interface Brightness { day: number; night: number; nightClock?: { from: number; to: number; level: number }; freekiosk?: { url?: string; key?: string } }
+export interface Brightness { day: number; night: number; nightClock?: { from: number; to: number; level: number }; eco?: boolean; freekiosk?: { url?: string; key?: string } }
 // event: HA event entity whose state (a timestamp) changes on every ring; camera shown full screen for `seconds`
 export interface Doorbell { event: string; camera: string; seconds?: number }
 
