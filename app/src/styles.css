@@ -955,20 +955,20 @@ body.tablet .clockface { justify-content: center; text-align: center; }
   background: var(--accent); color: #000; font: 600 22px var(--sans); animation: blink 1.2s steps(1) infinite;
 }
 
-/* weather alert pop-up: frosted glass, top centre, above the page but below doorbell/night clock */
+/* weather alert: fixed bar along the bottom edge, above the page but below doorbell/night clock; tap to hide */
 .wx-alert {
-  position: fixed; top: 18px; left: 50%; translate: -50%; z-index: 90; display: flex; flex-direction: column; gap: 8px;
-  min-width: min(420px, calc(100vw - 32px)); padding: 16px 52px 16px 20px; border-radius: 16px;
-  background: #1a1d24a6; border: 1px solid var(--line-hi); backdrop-filter: blur(16px) saturate(1.4);
-  box-shadow: 0 20px 50px -15px #000e; animation: wx-in .4s cubic-bezier(.2,.7,.2,1) both;
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 28px;
+  padding: 14px 20px; cursor: pointer;
+  background: #1a1d24e6; border-top: 1px solid var(--line-hi); backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: 0 -10px 30px -10px #000c; animation: wx-in .4s cubic-bezier(.2,.7,.2,1) both;
 }
 .wx-a { display: flex; align-items: center; gap: 12px; font-size: 16px; }
 .wx-a span { font-size: 28px; }
 .wx-a.bad b { color: var(--bad); } .wx-a.warn b { color: var(--accent); }
-.wx-alert button { position: absolute; top: 10px; right: 10px; width: 32px; height: 32px; padding: 0; border-radius: 50%; }
-body.tablet .wx-alert { top: 30px; padding: 22px 60px 22px 26px; }
+body.tablet .wx-alert { padding: 18px 26px; }
+body.eco .wx-alert { background: var(--card-solid); }
 body.tablet .wx-a { font-size: 22px; } body.tablet .wx-a span { font-size: 38px; }
-@keyframes wx-in { from { opacity: 0; translate: -50% -16px; } }
+@keyframes wx-in { from { opacity: 0; translate: 0 100%; } }
 
 /* todo-due widget */
 .row.due { align-items: center; justify-content: flex-start; }
@@ -1053,3 +1053,10 @@ body.eco::before { display: none; }
 body.eco .card { background: var(--card-solid); }
 .tset .tset-eco { justify-content: flex-start; }
 .tset-eco small { color: var(--muted); }
+.radar { position: relative; overflow: hidden; border-radius: 8px; background: #0e0f12; }
+.radar-grid { position: absolute; display: grid; grid-template-columns: repeat(3, 256px); width: 768px; }
+.radar-grid div { position: relative; }
+.radar-grid img { width: 256px; height: 256px; display: block; }
+.radar-grid .rain { position: absolute; inset: 0; opacity: .7; }
+.radar-pin { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px; border-radius: 50%; background: var(--accent); border: 2px solid #000; }
+.radar-time { color: var(--muted); font: 11px var(--mono); margin-left: 8px; }

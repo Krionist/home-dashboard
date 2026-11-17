@@ -25,16 +25,15 @@ export function weatherAlerts(hours: Hour[]): Alert[] {
   });
 }
 
-// translucent pop-up over the page while severe weather is due in the next `hours`
+// bar fixed to the bottom while severe weather is due in the next `hours`; goes by itself once the forecast drops it, tap hides it early
 @Component({
   selector: 'app-weather-alert',
   template: `
     @if (shown().length) {
-      <div class="wx-alert" role="alert">
+      <div class="wx-alert" role="alert" (click)="dismiss()" title="Érintésre eltűnik">
         @for (a of shown(); track a.key) {
           <div [class]="'wx-a ' + a.level"><span>{{ a.icon }}</span><b>{{ a.text }}</b></div>
         }
-        <button (click)="dismiss()" aria-label="Bezár">✕</button>
       </div>
     }`,
 })

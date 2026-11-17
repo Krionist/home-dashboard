@@ -12,6 +12,7 @@ export type Widget = { compact?: boolean; url?: string } & (
   | { type: 'bookmarks'; title?: string; groups: { title: string; links: Link[] }[] }
   | { type: 'monitor'; title: string; sites: { title: string; url: string; checkUrl?: string; icon?: string; queue?: 'sonarr' | 'radarr' }[] }
   | { type: 'iframe'; title: string; url: string; height?: number }
+  | { type: 'radar'; title: string; lat: number; lon: number; zoom?: number; height?: number } // RainViewer frames, zoom ≤ 7
   | { type: 'rss'; title: string; mode: 'merged' | 'tabs'; limit?: number; feeds: Feed[] }
   | { type: 'ha-entities'; title: string; entities: string[]; gauge?: { value: string; max: string; label?: string }; view?: 'tiles'; budgets?: boolean }
   | { type: 'calendar'; title: string; entities: CalSource[] }
@@ -45,7 +46,7 @@ export interface Page { name: string; columns: Column[] }
 // weatherAlert: pop-up for storms/hail/downpour/strong wind in the next `hours` of the weather entity's hourly forecast
 export interface Config { haUrl: string; pages: Page[]; weatherAlert?: { entity: string; hours?: number }; tablet?: Page & { brightness?: Brightness; doorbell?: Doorbell } }
 
-const TYPES = ['clock-weather', 'search', 'bookmarks', 'monitor', 'iframe', 'rss', 'ha-entities', 'calendar', 'longhorn', 'linkwarden', 'waqi', 'camera', 'climate', 'servers', 'pihole', 'torrent', 'purifier', 'ups', 'power', 'ha-button', 'devices', 'network', 'sparky', 'k8s', 'jellyfin', 'lubelogger', 'forecast', 'temp-chart', 'todo-due'];
+const TYPES = ['clock-weather', 'search', 'bookmarks', 'monitor', 'iframe', 'radar', 'rss', 'ha-entities', 'calendar', 'longhorn', 'linkwarden', 'waqi', 'camera', 'climate', 'servers', 'pihole', 'torrent', 'purifier', 'ups', 'power', 'ha-button', 'devices', 'network', 'sparky', 'k8s', 'jellyfin', 'lubelogger', 'forecast', 'temp-chart', 'todo-due'];
 
 export const isWidget = (w: unknown): w is Widget => TYPES.includes((w as Widget)?.type);
 

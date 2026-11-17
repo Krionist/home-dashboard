@@ -28,13 +28,14 @@ import { SearchWidget } from './widgets/search';
 import { TorrentWidget } from './widgets/torrent';
 import { ServersWidget } from './widgets/servers';
 import { SparkyWidget } from './widgets/sparky';
+import { RadarWidget } from './widgets/radar';
 import { UpsWidget } from './widgets/ups';
 import { WaqiWidget } from './widgets/waqi';
 import { HAS_ART, WidgetIcon } from './widgets/widget-icon';
 
 @Component({
   selector: 'app-page',
-  imports: [BookmarksWidget, CalendarWidget, CameraWidget, ClimateWidget, ClockWeatherWidget, DevicesWidget, ForecastWidget, HaButtonWidget, HaEntitiesWidget, IframeWidget, JellyfinWidget, K8sWidget, LinkwardenWidget,
+  imports: [BookmarksWidget, CalendarWidget, CameraWidget, ClimateWidget, ClockWeatherWidget, DevicesWidget, ForecastWidget, HaButtonWidget, HaEntitiesWidget, IframeWidget, RadarWidget, JellyfinWidget, K8sWidget, LinkwardenWidget,
     LonghornWidget, LubeloggerWidget, MonitorWidget, NetworkWidget, PiholeWidget, PowerWidget, PurifierWidget, RssWidget, SearchWidget, ServersWidget, SparkyWidget, TempChartWidget, TodoDueWidget, TorrentWidget, UpsWidget, WaqiWidget, WidgetIcon],
   template: `
     <div class="grid" [style.--cols]="cols()">
@@ -64,6 +65,7 @@ import { HAS_ART, WidgetIcon } from './widgets/widget-icon';
               @case ('bookmarks') { <app-bookmarks [w]="$any(w)" /> }
               @case ('monitor') { <app-monitor [w]="$any(w)" /> }
               @case ('iframe') { <app-iframe [w]="$any(w)" /> }
+              @case ('radar') { <app-radar [w]="$any(w)" /> }
               @case ('rss') { <app-rss [w]="$any(w)" /> }
               @case ('ha-entities') { <app-ha-entities [w]="$any(w)" /> }
               @case ('calendar') { <app-calendar [w]="$any(w)" /> }
